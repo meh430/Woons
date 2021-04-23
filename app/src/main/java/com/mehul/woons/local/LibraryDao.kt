@@ -14,7 +14,7 @@ import com.mehul.woons.entities.Webtoon
 @Dao
 interface LibraryDao {
     @Query("SELECT * FROM Library")
-    suspend fun getLibraryWebtoons(): LiveData<List<Webtoon>>
+    fun getLibraryWebtoons(): LiveData<List<Webtoon>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWebtoon(webtoon: Webtoon)

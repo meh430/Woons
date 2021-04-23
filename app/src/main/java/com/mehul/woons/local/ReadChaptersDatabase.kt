@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.mehul.woons.entities.Chapter
+import com.mehul.woons.entities.Webtoon
 
-@Database(entities = [Chapter::class], version = 1, exportSchema = false)
+@Database(entities = [Chapter::class, Webtoon::class], version = 1, exportSchema = false)
 abstract class ReadChaptersDatabase : RoomDatabase() {
 
     abstract fun readChaptersDao(): ReadChaptersDao

@@ -11,14 +11,14 @@ import androidx.room.PrimaryKey
 // keep count in infovm? update using dao, no need to pull whole object
 @Entity(tableName = "Library")
 data class Webtoon(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    var name: String,
-    var internalName: String?,
-    var coverImage: String,
-    @Ignore var summary: String?,
-    @Ignore var rating: String?,
-    @Ignore var author: String?,
-    @Ignore var artist: String?,
+    @PrimaryKey(autoGenerate = true) var id: Long = 0L,
+    var name: String = "",
+    var internalName: String = "",
+    var coverImage: String = "",
+    @Ignore var summary: String = "",
+    @Ignore var rating: String = "",
+    @Ignore var author: String = "",
+    @Ignore var artist: String = "",
     var numChapters: Int = 0,
     var numRead: Int = 0
 )

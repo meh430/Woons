@@ -15,7 +15,7 @@ import com.mehul.woons.entities.Chapter
 @Dao
 interface ReadChaptersDao {
     @Query("SELECT * FROM ReadChapters WHERE webtoonId = :webtoonId")
-    suspend fun getReadChapters(webtoonId: Long): LiveData<List<Chapter>>
+    fun getReadChapters(webtoonId: Long): LiveData<List<Chapter>>
 
     @Query("DELETE FROM ReadChapters WHERE id = :id")
     suspend fun deleteReadChapter(id: Long)

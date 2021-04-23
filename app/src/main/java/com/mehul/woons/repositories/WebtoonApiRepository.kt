@@ -37,6 +37,7 @@ class WebtoonApiRepository @Inject constructor(val webtoonApi: WebtoonApi) {
         webtoonApi.getWebtoonChapter(internalName, internalChapterReference)
     }
 
+    // This is for getting updated versions given a library of webtoons
     suspend fun getManyWebtoons(internalNames: List<String>): List<Webtoon> = withContext(Dispatchers.IO) {
         val webtoons = internalNames.map {
             val webtoonInfo = getWebtoonInfo(it)

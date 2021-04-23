@@ -7,7 +7,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-// @QueryMap Map<String, String> params
+// what the fuck is this bullshit o my
 interface WebtoonApi {
     @GET("available-categories")
     suspend fun getAvailableCategories(): List<String>

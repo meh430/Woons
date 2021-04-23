@@ -1,9 +1,6 @@
 package com.mehul.woons.entities
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 // Only really need to get read chapters in infoVm.
 // Update hasRead in infovm after getting read chapters from local and all chapters from network
@@ -17,10 +14,10 @@ import androidx.room.PrimaryKey
     )]
 )
 data class Chapter(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    val webtoonId: Long,
-    var chapterNumber: String,
-    var uploadDate: String,
-    @Ignore var internalChapterReference: String,
+    @PrimaryKey(autoGenerate = true) var id: Long = 0L,
+    @ColumnInfo(index = true) var webtoonId: Long = 0L,
+    var chapterNumber: String = "",
+    var uploadDate: String = "",
+    @Ignore var internalChapterReference: String = "",
     @Ignore var hasRead: Boolean = false
 )
