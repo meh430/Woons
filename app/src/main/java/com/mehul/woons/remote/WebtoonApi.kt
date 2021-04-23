@@ -1,4 +1,4 @@
-package com.mehul.woons
+package com.mehul.woons.remote
 
 import com.mehul.woons.entities.WebtoonChapters
 import com.mehul.woons.entities.WebtoonsPage
@@ -24,7 +24,7 @@ interface WebtoonApi {
     @GET("webtoon/{internalName}")
     suspend fun getWebtoonInfo(@Path("internalName") internalName: String): WebtoonChapters
 
-    
+
     @GET("webtoon-chapter/{internalName}/{internalChapterReference}")
     suspend fun getWebtoonChapter(
         @Path("internalName") internalName: String,

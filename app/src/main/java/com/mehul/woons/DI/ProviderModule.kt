@@ -1,7 +1,7 @@
 package com.mehul.woons.DI
 
 import android.app.Application
-import com.mehul.woons.WebtoonApi
+import com.mehul.woons.remote.WebtoonApi
 import com.mehul.woons.local.LibraryDatabase
 import com.mehul.woons.local.ReadChaptersDatabase
 import dagger.Module
