@@ -13,7 +13,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LibraryViewmodel(application: Application) : AndroidViewModel(application) {
+class LibraryViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var libraryRepository: LibraryRepository
 

@@ -1,7 +1,8 @@
 package com.mehul.woons.DI
 
 import android.app.Application
-import com.mehul.woons.viewmodels.LibraryViewmodel
+import com.mehul.woons.viewmodels.LibraryViewModel
+import com.mehul.woons.viewmodels.WebtoonInfoViewModel
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -11,7 +12,8 @@ import javax.inject.Singleton
 @Component(modules = [ProviderModule::class])
 interface AppComponent {
     // field injectors
-    fun injectIntoLibrary(libraryViewmodel: LibraryViewmodel)
+    fun injectIntoLibrary(libraryViewmodel: LibraryViewModel)
+    fun injectIntoInfo(webtoonInfoViewModel: WebtoonInfoViewModel)
 
     @Component.Builder
     interface Builder {
