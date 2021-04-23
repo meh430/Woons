@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 // Update reading counts in repo with dao sql query!
 // In libraryvm, list of webtoons with transform for numRead and numChapters checks
 // keep count in infovm? update using dao, no need to pull whole object
-@Entity(tableName = "library")
+@Entity(tableName = "Library")
 data class Webtoon(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     var name: String,

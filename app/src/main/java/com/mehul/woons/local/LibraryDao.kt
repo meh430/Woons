@@ -13,24 +13,24 @@ import com.mehul.woons.entities.Webtoon
 // update numchapters
 @Dao
 interface LibraryDao {
-    @Query("SELECT * FROM library")
+    @Query("SELECT * FROM Library")
     suspend fun getLibraryWebtoons(): LiveData<List<Webtoon>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWebtoon(webtoon: Webtoon)
 
-    @Query("DELETE FROM library WHERE id = :id")
+    @Query("DELETE FROM Library WHERE id = :id")
     suspend fun deleteWebtoon(id: Long)
 
-    @Query("SELECT EXISTS(SELECT * FROM library where name = :name)")
+    @Query("SELECT EXISTS(SELECT * FROM Library where name = :name)")
     suspend fun webtoonWithNameExists(name: String): Boolean
 
-    @Query("UPDATE library SET coverImage = :coverImage")
-    suspend fun updateCoverImage(coverImage: String)
+    @Query("UPDATE Library SET coverImage = :coverImage WHERE id = :id")
+    suspend fun updateCoverImage(id: Long, coverImage: String)
 
-    @Query("UPDATE library SET numChapters = :numChapters")
-    suspend fun updateNumChapters(numChapters: Int)
+    @Query("UPDATE Library SET numChapters = :numChapters WHERE id = :id")
+    suspend fun updateNumChapters(id: Long, numChapters: Int)
 
-    @Query("UPDATE library SET numRead = :numRead")
-    suspend fun updateNumRead(numRead: Int)
+    @Query("UPDATE Library SET numRead = :numRead WHERE id = :id")
+    suspend fun updateNumRead(id: Long, numRead: Int)
 }
