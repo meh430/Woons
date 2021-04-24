@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mehul.woons.WoonsApplication
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.WebtoonsPage
 import com.mehul.woons.loadRemoteData
@@ -25,6 +26,7 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
     val discoverLists: MutableLiveData<ArrayList<Resource<WebtoonsPage>>> = MutableLiveData()
 
     init {
+        (application as WoonsApplication).appComponent.injectIntoDiscover(this)
         discoverLists.value = ArrayList()
     }
 
