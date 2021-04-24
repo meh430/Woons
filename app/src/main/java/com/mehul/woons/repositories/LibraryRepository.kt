@@ -25,6 +25,10 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
         libraryDao.webtoonWithNameExists(name)
     }
 
+    suspend fun getWebtoonIdFromName(name: String) = withContext(Dispatchers.IO) {
+        libraryDao.getWebtoonIdFromName(name)
+    }
+
     suspend fun updateCoverImage(id: Long, coverImage: String) = withContext(Dispatchers.IO) {
         libraryDao.updateCoverImage(id, coverImage)
     }
@@ -35,5 +39,9 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
 
     suspend fun updateNumRead(id: Long, numRead: Int) = withContext(Dispatchers.IO) {
         libraryDao.updateNumRead(id, numRead)
+    }
+
+    companion object {
+        const val NOT_IN_LIBRARY: Long = -1
     }
 }

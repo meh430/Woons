@@ -26,6 +26,6 @@ class ReadChaptersRepository @Inject constructor(val readChaptersDao: ReadChapte
     }
 
     suspend fun insertAllReadChapters(chapters: List<Chapter>) = withContext(Dispatchers.IO) {
-        readChaptersDao.insertAllReadChapters(chapters)
+        readChaptersDao.insertManyReadChapters(chapters)
     }
 }

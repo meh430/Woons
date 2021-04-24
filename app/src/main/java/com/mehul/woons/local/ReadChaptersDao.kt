@@ -27,5 +27,5 @@ interface ReadChaptersDao {
     suspend fun insertReadChapter(chapter: Chapter)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllReadChapters(chapters: List<Chapter>)
+    suspend fun insertManyReadChapters(chapters: List<Chapter>)
 }
