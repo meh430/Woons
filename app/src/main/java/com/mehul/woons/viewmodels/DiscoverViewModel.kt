@@ -39,13 +39,8 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
             }
 
             // Start retrieving data concurrently
-            val deferredDiscovers = cats.map {
-                async {
-                    getPage(it)
-                }
-            }
-            val discs = deferredDiscovers.awaitAll()
-            discs.forEachIndexed { index, resource ->
+            val deferredDiscovers = cats.map { async { getPage(it) } }
+            deferredDiscovers.awaitAll().forEachIndexed { index, resource ->
                 discoverLists.value!![index] = resource
                 notifyChange()
             }
