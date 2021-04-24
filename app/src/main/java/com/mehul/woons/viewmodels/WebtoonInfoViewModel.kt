@@ -34,7 +34,7 @@ class WebtoonInfoViewModel(
 
     // to track removals and additions to library
     var webtoonIdLive = MutableLiveData<Long>()
-    val inLibrary = MutableLiveData<Boolean>()
+    var inLibrary = webtoonId != LibraryRepository.NOT_IN_LIBRARY
     var numRead = 0
 
     // Data from api
@@ -43,7 +43,11 @@ class WebtoonInfoViewModel(
     // Chapters read gotten from room
     val readChapters = Transformations.switchMap(webtoonIdLive) {
         liveData<List<Chapter>> {
-            chaptersRepository.getReadChapters(webtoonId)
+            if (it != LibraryRepository.NOT_IN_LIBRARY) {
+                chaptersRepository.getReadChapters(it)
+            } else {
+                ArrayList<Chapter>()
+            }
         }
     }
 
@@ -52,7 +56,7 @@ class WebtoonInfoViewModel(
 
     init {
         webtoonIdLive.value = webtoonId
-        inLibrary.value = webtoonId != LibraryRepository.NOT_IN_LIBRARY
+        inLibrary = webtoonId != LibraryRepository.NOT_IN_LIBRARY
         startLoading()
         (application as WoonsApplication).appComponent.injectIntoInfo(this)
     }
@@ -79,7 +83,7 @@ class WebtoonInfoViewModel(
             }
 
             // Update stored data if in library?
-            if (inLibrary.value!!) {
+            if (inLibrary) {
                 numRead = libraryRepository.getNumRead(webtoonIdLive.value!!)
                 val currWebtoon = webtoonInfo.value!!.data!!.webtoon
                 libraryRepository.updateCoverImage(webtoonIdLive.value!!, currWebtoon.coverImage)
@@ -94,7 +98,7 @@ class WebtoonInfoViewModel(
 
     // Requires webtoon info to be loaded
     private suspend fun getUpdatedAllChapters() = withContext(Dispatchers.Default) {
-        val readChs = if (inLibrary.value!!) {
+        val readChs = if (inLibrary) {
             chaptersRepository.getNonLiveReadChapters(webtoonIdLive.value!!)
         } else {
             ArrayList()
@@ -135,25 +139,25 @@ class WebtoonInfoViewModel(
                 )
             )
 
-            inLibrary.value = true
+            inLibrary = true
             webtoonIdLive.value = insertId
         }
     }
 
     fun removeFromLibrary() {
-        if (!inLibrary.value!!) {
+        if (!inLibrary) {
             return
         }
         viewModelScope.launch {
             libraryRepository.deleteWebtoon(webtoonIdLive.value!!)
             webtoonIdLive.value = LibraryRepository.NOT_IN_LIBRARY
-            inLibrary.value = false
+            inLibrary = false
         }
     }
 
     // TODO: update counts
     fun markSingleRead(position: Int) {
-        if (!inLibrary.value!!) {
+        if (!inLibrary) {
             return
         }
 
@@ -170,7 +174,7 @@ class WebtoonInfoViewModel(
     }
 
     fun markManyRead(cutOff: Int) {
-        if (!inLibrary.value!!) {
+        if (!inLibrary) {
             return
         }
         // Make list slice [cutOff, len]
@@ -194,7 +198,7 @@ class WebtoonInfoViewModel(
     }
 
     fun markSingleUnread(position: Int) {
-        if (!inLibrary.value!!) {
+        if (!inLibrary) {
             return
         }
 
@@ -209,7 +213,7 @@ class WebtoonInfoViewModel(
     }
 
     fun markManyUnread(cutOff: Int) {
-        if (!inLibrary.value!!) {
+        if (!inLibrary) {
             return
         }
 
