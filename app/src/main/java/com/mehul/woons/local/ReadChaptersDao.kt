@@ -17,6 +17,9 @@ interface ReadChaptersDao {
     @Query("SELECT * FROM ReadChapters WHERE webtoonId = :webtoonId")
     fun getReadChapters(webtoonId: Long): LiveData<List<Chapter>>
 
+    @Query("SELECT * FROM ReadChapters WHERE webtoonId = :webtoonId")
+    suspend fun getNonLiveReadChapters(webtoonId: Long): List<Chapter>
+
     @Query("DELETE FROM ReadChapters WHERE id = :id")
     suspend fun deleteReadChapter(id: Long)
 

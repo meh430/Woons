@@ -20,6 +20,9 @@ interface LibraryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWebtoon(webtoon: Webtoon): Long
 
+    @Query("SELECT numRead FROM Library WHERE id = :id")
+    suspend fun getNumRead(id: Long): Int
+
     @Query("DELETE FROM Library WHERE id = :id")
     suspend fun deleteWebtoon(id: Long)
 

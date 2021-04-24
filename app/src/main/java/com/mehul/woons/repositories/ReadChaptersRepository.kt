@@ -13,6 +13,10 @@ class ReadChaptersRepository @Inject constructor(val readChaptersDao: ReadChapte
             readChaptersDao.getReadChapters(webtoonId)
         }
 
+    suspend fun getNonLiveReadChapters(webtoonId: Long) = withContext(Dispatchers.IO) {
+        readChaptersDao.getNonLiveReadChapters(webtoonId)
+    }
+
     suspend fun deleteReadChapter(id: Long) = withContext(Dispatchers.IO) {
         readChaptersDao.deleteReadChapter(id)
     }

@@ -13,6 +13,10 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
         libraryDao.getLibraryWebtoons()
     }
 
+    suspend fun getNumRead(id: Long) = withContext(Dispatchers.IO) {
+        libraryDao.getNumRead(id)
+    }
+
     suspend fun insertWebtoon(webtoon: Webtoon) = withContext(Dispatchers.IO) {
         libraryDao.insertWebtoon(webtoon)
     }

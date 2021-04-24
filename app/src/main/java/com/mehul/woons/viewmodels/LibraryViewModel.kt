@@ -21,13 +21,12 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
     lateinit var webtoonApiRepository: WebtoonApiRepository
 
     val initialLoading: MutableLiveData<Boolean> = MutableLiveData()
-    val libraryWebtoons: LiveData<Resource<List<Webtoon>>> by lazy {
+    val libraryWebtoons: LiveData<Resource<List<Webtoon>>> =
         loadLocalData { libraryRepository.getLibraryWebtoons() }
-    }
 
     init {
         (application as WoonsApplication).appComponent.injectIntoLibrary(this)
-        initialLoading.value = false
+        initialLoading.value = true
     }
 
     // Updates information in room with fresh data from api
