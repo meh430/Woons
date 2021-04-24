@@ -8,6 +8,7 @@ import com.mehul.woons.WoonsApplication
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.WebtoonsPage
 import com.mehul.woons.loadRemoteData
+import com.mehul.woons.notifyObserver
 import com.mehul.woons.repositories.WebtoonApiRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -37,14 +38,14 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
             // Add loadings
             cats.forEach {
                 discoverLists.value?.add(Resource.loading())
-                notifyChange()
+                discoverLists.notifyObserver()
             }
 
             // Start retrieving data concurrently
             val deferredDiscovers = cats.map { async { getPage(it) } }
             deferredDiscovers.awaitAll().forEachIndexed { index, resource ->
                 discoverLists.value!![index] = resource
-                notifyChange()
+                discoverLists.notifyObserver()
             }
         }
     }
@@ -60,10 +61,6 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
         }
 
         return retval
-    }
-
-    fun notifyChange() {
-        discoverLists.value = discoverLists.value
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package com.mehul.woons
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import com.mehul.woons.entities.Resource
@@ -30,3 +31,7 @@ fun <T> loadRemoteData(remoteCall: suspend () -> T): LiveData<Resource<T>> =
             emit(Resource.error(it.message, null))
         }
     }
+
+fun <T> MutableLiveData<T>.notifyObserver() {
+    this.value = this.value
+}
