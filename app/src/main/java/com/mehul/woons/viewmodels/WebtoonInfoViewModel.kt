@@ -113,7 +113,7 @@ class WebtoonInfoViewModel(
         }
     }
 
-    // requires webtoon info was loaded
+    // all funcs below require webtoon info to be loaded
     fun addToLibrary() {
         viewModelScope.launch {
             val currWebtoon = webtoonInfo.value!!.data!!.webtoon
@@ -132,7 +132,6 @@ class WebtoonInfoViewModel(
         }
     }
 
-    // Requires webtoon info was loaded
     fun removeFromLibrary() {
         if (!inLibrary.value!!) {
             return
@@ -142,16 +141,44 @@ class WebtoonInfoViewModel(
         }
     }
 
-    fun markSingleRead() {
-
+    // TODO: update counts
+    fun markSingleRead(position: Int) {
+        viewModelScope.launch {
+            val markedCh = allChapters.value!!.data!![position].copy()
+            if (!markedCh.hasRead) {
+                markedCh.id = 0
+                markedCh.webtoonId = webtoonIdLive.value!!
+                chaptersRepository.insertReadChapter(markedCh)
+            }
+        }
     }
 
-    fun markManyRead() {
-
+    fun markManyRead(cutOff: Int) {
+        // Make list slice [cutOff, len]
+        // filter out all the read chapters, only marking unread chapters
+        // create list of copies
+        viewModelScope.launch {
+            val allChaptersLength = allChapters.value!!.data!!.size
+            val markedChapters =
+                allChapters.value!!.data!!.slice(cutOff until allChaptersLength).filter {
+                    !it.hasRead
+                }.map {
+                    val ch = it.copy()
+                    ch.id = 0
+                    ch.webtoonId = webtoonIdLive.value!!
+                    ch
+                }
+            chaptersRepository.insertAllReadChapters(markedChapters)
+        }
     }
 
-    fun markSingleUnread() {
-
+    fun markSingleUnread(position: Int) {
+        viewModelScope.launch {
+            val markedCh = allChapters.value!!.data!![position].copy()
+            if (markedCh.hasRead) {
+                chaptersRepository.deleteReadChapter(markedCh.id)
+            }
+        }
     }
 
     fun markManyUnread() {
