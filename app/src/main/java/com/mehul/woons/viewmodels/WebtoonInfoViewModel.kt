@@ -35,7 +35,6 @@ class WebtoonInfoViewModel(
     // to track removals and additions to library
     var webtoonIdLive = MutableLiveData<Long>()
     var inLibrary = webtoonId != LibraryRepository.NOT_IN_LIBRARY
-    var numRead = 0
 
     // Data from api
     var webtoonInfo = MutableLiveData<Resource<WebtoonChapters>>()
@@ -84,10 +83,8 @@ class WebtoonInfoViewModel(
 
             // Update stored data if in library?
             if (inLibrary) {
-                numRead = libraryRepository.getNumRead(webtoonIdLive.value!!)
                 val currWebtoon = webtoonInfo.value!!.data!!.webtoon
                 libraryRepository.updateCoverImage(webtoonIdLive.value!!, currWebtoon.coverImage)
-                libraryRepository.updateNumChapters(webtoonIdLive.value!!, currWebtoon.numChapters)
             }
 
             // get all chapters
@@ -166,8 +163,6 @@ class WebtoonInfoViewModel(
                 markedCh.id = 0
                 markedCh.webtoonId = webtoonIdLive.value!!
                 chaptersRepository.insertReadChapter(markedCh)
-                numRead++
-                libraryRepository.updateNumRead(webtoonIdLive.value!!, numRead)
             }
         }
     }
@@ -191,8 +186,6 @@ class WebtoonInfoViewModel(
                     ch
                 }
             chaptersRepository.insertAllReadChapters(markedChapters)
-            numRead += markedChapters.size
-            libraryRepository.updateNumRead(webtoonIdLive.value!!, numRead)
         }
     }
 
@@ -205,8 +198,6 @@ class WebtoonInfoViewModel(
             val markedCh = allChapters.value!!.data!![position]
             if (markedCh.hasRead) {
                 chaptersRepository.deleteReadChapter(markedCh.id)
-                numRead -= 1
-                libraryRepository.updateNumRead(webtoonIdLive.value!!, numRead)
             }
         }
     }
@@ -223,8 +214,6 @@ class WebtoonInfoViewModel(
                     it.hasRead
                 }.map { it.id }
             chaptersRepository.deleteManyReadChapters(markedChapters)
-            numRead -= markedChapters.size
-            libraryRepository.updateNumRead(webtoonIdLive.value!!, numRead)
         }
     }
 }

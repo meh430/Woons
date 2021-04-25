@@ -19,6 +19,5 @@ data class Webtoon(
     @Ignore var rating: String = "",
     @Ignore var author: String = "",
     @Ignore var artist: String = "",
-    var numChapters: Int = 0,
-    var numRead: Int = 0
+    @Ignore var numChapters: Int = 0
 )

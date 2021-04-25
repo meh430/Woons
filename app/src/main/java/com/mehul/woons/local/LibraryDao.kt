@@ -26,9 +26,6 @@ interface LibraryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWebtoon(webtoon: Webtoon): Long
 
-    @Query("SELECT numRead FROM Library WHERE id = :id")
-    suspend fun getNumRead(id: Long): Int
-
     @Query("DELETE FROM Library WHERE id = :id")
     suspend fun deleteWebtoon(id: Long)
 
@@ -40,12 +37,6 @@ interface LibraryDao {
 
     @Query("UPDATE Library SET coverImage = :coverImage WHERE id = :id")
     suspend fun updateCoverImage(id: Long, coverImage: String)
-
-    @Query("UPDATE Library SET numChapters = :numChapters WHERE id = :id")
-    suspend fun updateNumChapters(id: Long, numChapters: Int)
-
-    @Query("UPDATE Library SET numRead = :numRead WHERE id = :id")
-    suspend fun updateNumRead(id: Long, numRead: Int)
 
     @Query("DELETE FROM Library")
     suspend fun deleteAllWebtoons()

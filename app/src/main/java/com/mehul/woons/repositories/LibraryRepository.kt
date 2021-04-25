@@ -16,10 +16,6 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
         libraryDao.getNonLiveLibraryWebtoons()
     }
 
-    suspend fun getNumRead(id: Long) = withContext(Dispatchers.IO) {
-        libraryDao.getNumRead(id)
-    }
-
     suspend fun insertWebtoon(webtoon: Webtoon) = withContext(Dispatchers.IO) {
         libraryDao.insertWebtoon(webtoon)
     }
@@ -38,14 +34,6 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
 
     suspend fun updateCoverImage(id: Long, coverImage: String) = withContext(Dispatchers.IO) {
         libraryDao.updateCoverImage(id, coverImage)
-    }
-
-    suspend fun updateNumChapters(id: Long, numChapters: Int) = withContext(Dispatchers.IO) {
-        libraryDao.updateNumChapters(id, numChapters)
-    }
-
-    suspend fun updateNumRead(id: Long, numRead: Int) = withContext(Dispatchers.IO) {
-        libraryDao.updateNumRead(id, numRead)
     }
 
     suspend fun deleteAllWebtoons() = withContext(Dispatchers.IO) {
