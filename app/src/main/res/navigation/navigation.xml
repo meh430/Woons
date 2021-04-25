@@ -8,7 +8,11 @@
         android:id="@+id/libraryFragment"
         android:name="com.mehul.woons.fragments.LibraryFragment"
         android:label="Library"
-        tools:layout="@layout/fragment_library" />
+        tools:layout="@layout/fragment_library">
+        <action
+            android:id="@+id/action_libraryFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/browseFragment"
         android:name="com.mehul.woons.fragments.BrowseFragment"
@@ -21,6 +25,9 @@
             android:name="category"
             android:defaultValue="latest"
             app:argType="string" />
+        <action
+            android:id="@+id/action_browseFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
     <fragment
         android:id="@+id/discoverFragment"
@@ -30,10 +37,29 @@
         <action
             android:id="@+id/action_discoverFragment_to_browseFragment"
             app:destination="@id/browseFragment" />
+        <action
+            android:id="@+id/action_discoverFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.mehul.woons.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.mehul.woons.fragments.InfoFragment"
+        android:label="fragment_info"
+        tools:layout="@layout/fragment_info">
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="internalName"
+            app:argType="string" />
+        <argument
+            android:name="webtoonId"
+            android:defaultValue="-1L"
+            app:argType="long" />
+    </fragment>
 </navigation>
