@@ -12,29 +12,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Media -->
-        <ImageView
-            android:id="@+id/coverImage"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_gravity="center"
-            android:contentDescription="IMAGE"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_image" />
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/title"
+            <!-- Media -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/newChapters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TITLE"
-                android:textAppearance="?attr/textAppearanceHeadline6" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="8dp"
+                android:text="New!"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textColor="?attr/colorSurface"
+                app:chipBackgroundColor="?attr/colorPrimary" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/coverImage"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:contentDescription="IMAGE"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_image" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Webtoon Title"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

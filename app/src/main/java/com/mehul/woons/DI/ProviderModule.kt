@@ -1,9 +1,10 @@
 package com.mehul.woons.DI
 
 import android.app.Application
-import com.mehul.woons.remote.WebtoonApi
+import com.mehul.woons.Constants
 import com.mehul.woons.local.LibraryDatabase
 import com.mehul.woons.local.ReadChaptersDatabase
+import com.mehul.woons.remote.WebtoonApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -19,7 +20,7 @@ class ProviderModule {
     @Singleton
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit =
-        Retrofit.Builder().baseUrl("endpoint").client(client)
+        Retrofit.Builder().baseUrl(Constants.ENDPOINT).client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
