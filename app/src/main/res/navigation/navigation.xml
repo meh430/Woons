@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/browseFragment">
+    app:startDestination="@id/libraryFragment">
     <fragment
         android:id="@+id/libraryFragment"
         android:name="com.mehul.woons.fragments.LibraryFragment"

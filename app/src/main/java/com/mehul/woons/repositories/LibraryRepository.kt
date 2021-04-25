@@ -44,6 +44,10 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
         libraryDao.updateNumRead(id, numRead)
     }
 
+    suspend fun deleteAllWebtoons() = withContext(Dispatchers.IO) {
+        libraryDao.deleteAllWebtoons()
+    }
+
     companion object {
         const val NOT_IN_LIBRARY: Long = -1
     }

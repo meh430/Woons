@@ -1,7 +1,10 @@
 package com.mehul.woons.local
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.mehul.woons.entities.Webtoon
 
 // get all the webtoons in library
@@ -40,4 +43,7 @@ interface LibraryDao {
 
     @Query("UPDATE Library SET numRead = :numRead WHERE id = :id")
     suspend fun updateNumRead(id: Long, numRead: Int)
+
+    @Query("DELETE FROM Library")
+    suspend fun deleteAllWebtoons()
 }
