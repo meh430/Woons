@@ -3,5 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    app:layout_scrollFlags="scroll|enterAlways" />
+    android:layout_height="wrap_content"
+    android:background="?android:attr/colorBackground"
+    android:elevation="0dp"
+    app:layout_scrollFlags="scroll|enterAlways|snap"
+    app:title="Library"
+    app:titleTextColor="?attr/colorOnSurface" />

@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.mehul.woons.databinding.ActivityMainBinding
 
@@ -43,14 +41,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val appBarConfiguration = AppBarConfiguration(
+        /*val appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(
                 R.id.libraryFragment,
                 R.id.discoverFragment,
                 R.id.settingsFragment
             )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        )*/
+        //setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {

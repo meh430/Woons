@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".fragments.LibraryFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/webtoonScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="4dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     <include
         android:id="@+id/empty"
         layout="@layout/empty" />
@@ -20,14 +31,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/webtoonScroll"
-        android:padding="4dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
 </RelativeLayout>

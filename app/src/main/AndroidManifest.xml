@@ -19,7 +19,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/Theme.Woons.ActionBar">
+            android:theme="@style/Theme.Woons.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
