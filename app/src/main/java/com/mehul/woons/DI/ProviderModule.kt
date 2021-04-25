@@ -9,7 +9,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 // Provides daos, databases, retrofit, gson, services
@@ -21,7 +21,7 @@ class ProviderModule {
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder().baseUrl(Constants.ENDPOINT).client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
             .build()
 
     @Singleton

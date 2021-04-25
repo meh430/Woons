@@ -4,16 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.mehul.woons.WoonsApplication
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.loadLocalData
 import com.mehul.woons.repositories.LibraryRepository
 import com.mehul.woons.repositories.WebtoonApiRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class LibraryViewModel(application: Application) : AndroidViewModel(application) {
@@ -30,30 +26,6 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
     init {
         (application as WoonsApplication).appComponent.injectIntoLibrary(this)
         initialLoading.value = true
-    }
-
-    // Updates information in room with fresh data from api
-    // Run in splash activity!
-    fun updateLibraryInfo() {
-        initialLoading.value = true
-        viewModelScope.launch(Dispatchers.Default) {
-            // libraryRepository.deleteAllWebtoons()
-            populateTable()
-
-            val storedWebtoons = libraryRepository.getLibraryWebtoons().value
-            val internalNames = storedWebtoons?.map { it.internalName } ?: ArrayList()
-            val ids = storedWebtoons?.map { it.id } ?: ArrayList()
-            val freshWebtoons = webtoonApiRepository.getManyWebtoons(internalNames, ids)
-            freshWebtoons.forEach {
-                val updateCoverImage =
-                    async { libraryRepository.updateCoverImage(it.id, it.coverImage) }
-                val updateNumChapters =
-                    async { libraryRepository.updateNumChapters(it.id, it.numChapters) }
-                updateCoverImage.await()
-                updateNumChapters.await()
-            }
-            initialLoading.postValue(false)
-        }
     }
 
     // For testing
@@ -84,11 +56,13 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
                 coverImage = "https://mangakomi.com/wp-content/uploads/2020/01/thumb_5e0c84e82ad4d.jpg"
             ),
             Webtoon(
+                numRead = 2,
                 name = "Killing Stalking",
                 internalName = "killing-stalking",
                 coverImage = "https://mangakomi.com/wp-content/uploads/2020/03/thumb_5e690e8a765a9.jpg"
             ),
             Webtoon(
+                numRead = 2,
                 name = "Dimensional Mercenary",
                 internalName = "dimensional-mercenary",
                 coverImage = "https://mangakomi.com/wp-content/uploads/2020/01/Dimensional-Mercenary.jpg"

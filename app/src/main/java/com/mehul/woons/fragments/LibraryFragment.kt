@@ -13,6 +13,8 @@ import com.mehul.woons.calculateNoOfColumns
 import com.mehul.woons.databinding.FragmentLibraryBinding
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.viewmodels.LibraryViewModel
+import timber.log.Timber
+
 
 class LibraryFragment : Fragment() {
     private var _binding: FragmentLibraryBinding? = null
@@ -32,6 +34,7 @@ class LibraryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeAdapter()
+
         libraryViewModel.libraryWebtoons.observe(viewLifecycleOwner) {
             hideAll()
             when (it.status) {
@@ -41,6 +44,7 @@ class LibraryFragment : Fragment() {
                         binding.empty.emptyLabel.text = "Library is empty :("
                         binding.empty.empty.visibility = View.VISIBLE
                     } else {
+                        Timber.e(it.data.toString())
                         binding.webtoonScroll.visibility = View.VISIBLE
 
                     }

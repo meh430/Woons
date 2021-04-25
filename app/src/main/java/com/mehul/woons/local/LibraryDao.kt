@@ -19,6 +19,9 @@ interface LibraryDao {
     @Query("SELECT * FROM Library")
     fun getLibraryWebtoons(): LiveData<List<Webtoon>>
 
+    @Query("SELECT * FROM Library")
+    suspend fun getNonLiveLibraryWebtoons(): List<Webtoon>
+
     // Returns insert id
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWebtoon(webtoon: Webtoon): Long

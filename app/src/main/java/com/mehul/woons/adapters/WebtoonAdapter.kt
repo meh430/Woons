@@ -1,7 +1,6 @@
 package com.mehul.woons.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -40,11 +39,7 @@ class WebtoonAdapter(val onClick: (Webtoon) -> Unit) :
             binding.title.text = wt.name
             Glide.with(binding.coverImage.context).load(wt.coverImage).centerCrop()
                 .into(binding.coverImage)
-            binding.newChapters.visibility = if (wt.numChapters == wt.numRead) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+
         }
     }
 }

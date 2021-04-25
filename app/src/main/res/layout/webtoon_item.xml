@@ -4,7 +4,8 @@
     android:id="@+id/webtoonItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="4dp"
+    android:elevation="4dp"
     app:cardCornerRadius="6dp">
 
     <LinearLayout
@@ -12,32 +13,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/coverImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- Media -->
-            <com.google.android.material.chip.Chip
-                android:id="@+id/newChapters"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="8dp"
-                android:text="New!"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?attr/colorSurface"
-                app:chipBackgroundColor="?attr/colorPrimary" />
-
-            <ImageView
-                android:id="@+id/coverImage"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:contentDescription="IMAGE"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_image" />
-
-        </RelativeLayout>
+            android:layout_height="260dp"
+            android:contentDescription="IMAGE"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_image" />
 
         <TextView
             android:id="@+id/title"
@@ -45,7 +27,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="Webtoon Title"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
+            android:textColor="?attr/colorOnBackground"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeStepGranularity="2sp"
+            app:autoSizeTextType="uniform" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
