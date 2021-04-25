@@ -37,7 +37,7 @@ class LibraryFragment : Fragment() {
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     libraryAdapter.updateWebtoons(it.data!!)
-                    if (it.data.size == 0) {
+                    if (it.data.isEmpty()) {
                         binding.empty.emptyLabel.text = "Library is empty :("
                         binding.empty.empty.visibility = View.VISIBLE
                     } else {
