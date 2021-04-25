@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/browseFragment">
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.mehul.woons.fragments.LibraryFragment"
+        android:label="Library"
+        tools:layout="@layout/fragment_library" />
+    <fragment
+        android:id="@+id/browseFragment"
+        android:name="com.mehul.woons.fragments.BrowseFragment"
+        tools:layout="@layout/fragment_browse">
+        <argument
+            android:name="isSearch"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="category"
+            android:defaultValue="latest"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.mehul.woons.fragments.DiscoverFragment"
+        android:label="Discover"
+        tools:layout="@layout/fragment_discover">
+        <action
+            android:id="@+id/action_discoverFragment_to_browseFragment"
+            app:destination="@id/browseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.mehul.woons.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
