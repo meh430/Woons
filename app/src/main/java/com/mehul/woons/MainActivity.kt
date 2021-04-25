@@ -8,7 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.mehul.woons.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
 
     /*val lol = object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -34,10 +34,22 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragNavHost)
         binding.bottomNavView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.browseFragment) {
+            if (destination.id == R.id.browseFragment || destination.id == R.id.infoFragment) {
                 binding.bottomNavView.visibility = View.GONE
             } else {
                 binding.bottomNavView.visibility = View.VISIBLE
+            }
+
+            when (destination.id) {
+                R.id.libraryFragment -> {
+                    binding.toolbar.toolbar.title = "Library"
+                }
+                R.id.discoverFragment -> {
+                    binding.toolbar.toolbar.title = "Discover"
+                }
+                R.id.settingsFragment -> {
+                    binding.toolbar.toolbar.title = "Settings"
+                }
             }
         }
 
