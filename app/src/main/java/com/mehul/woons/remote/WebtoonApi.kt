@@ -3,7 +3,6 @@ package com.mehul.woons.remote
 import com.mehul.woons.entities.WebtoonChapters
 import com.mehul.woons.entities.WebtoonsPage
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
