@@ -6,6 +6,10 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        viewBinding true
+    }
+
     compileSdkVersion 30
 
     defaultConfig {
