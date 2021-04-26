@@ -6,13 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mehul.woons.Constants
 import com.mehul.woons.adapters.WebtoonAdapter
+import com.mehul.woons.addOrRemoveFromLibrary
 import com.mehul.woons.calculateNoOfColumns
 import com.mehul.woons.databinding.FragmentLibraryBinding
 import com.mehul.woons.entities.Resource
+import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.viewmodels.LibraryViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -61,8 +65,14 @@ class LibraryFragment : Fragment() {
     }
 
     private fun initializeAdapter() {
-        libraryAdapter = WebtoonAdapter(true) {
-            // Launch info fragment
+        val onWebtoonClick = { webtoon: Webtoon ->
+            Timber.e(webtoon.toString())
+        }
+        libraryAdapter = WebtoonAdapter(true, onWebtoonClick) {
+            // long click so change library
+            lifecycleScope.launch {
+                addOrRemoveFromLibrary(requireContext(), libraryViewModel.libraryRepository, it)
+            }
         }
         binding.webtoonScroll.layoutManager =
             GridLayoutManager(

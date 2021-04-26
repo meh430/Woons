@@ -6,6 +6,7 @@ import com.mehul.woons.WoonsApplication
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.WebtoonsPage
 import com.mehul.woons.repositories.DiscoverCacheRepository
+import com.mehul.woons.repositories.LibraryRepository
 import com.mehul.woons.repositories.WebtoonApiRepository
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -19,6 +20,9 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
 
     @Inject
     lateinit var discoverCacheRepository: DiscoverCacheRepository
+
+    @Inject
+    lateinit var libraryRepository: LibraryRepository
 
     val discoverLists: LiveData<Resource<List<WebtoonsPage>>> = liveData(Dispatchers.IO) {
         emit(Resource.loading<List<WebtoonsPage>>())

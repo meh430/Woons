@@ -9,6 +9,7 @@ import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.entities.WebtoonsPage
 import com.mehul.woons.notifyObserver
+import com.mehul.woons.repositories.LibraryRepository
 import com.mehul.woons.repositories.WebtoonApiRepository
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -17,6 +18,9 @@ import javax.inject.Inject
 class BrowseViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var webtoonApiRepository: WebtoonApiRepository
+
+    @Inject
+    lateinit var libraryRepository: LibraryRepository
 
     var reachedEnd = false
     var pageNum: Int = DiscoverViewModel.PAGE

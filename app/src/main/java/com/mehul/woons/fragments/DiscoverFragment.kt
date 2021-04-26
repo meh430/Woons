@@ -9,12 +9,15 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.mehul.woons.adapters.DiscoverAdapter
+import com.mehul.woons.addOrRemoveFromLibrary
 import com.mehul.woons.databinding.FragmentDiscoverBinding
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.viewmodels.DiscoverViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DiscoverFragment : Fragment() {
@@ -36,6 +39,16 @@ class DiscoverFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val onWebtoonClick = { webtoon: Webtoon -> Timber.e(webtoon.toString()) }
+        val onWebtoonLongClick: (Webtoon) -> Unit = {
+            // long click so change library
+            lifecycleScope.launch {
+                addOrRemoveFromLibrary(
+                    requireContext(),
+                    discoverViewModel.libraryRepository,
+                    it
+                )
+            }
+        }
         val onDiscoverClick = { category: String ->
             Timber.e(category)
             val toBrowse =
@@ -43,7 +56,7 @@ class DiscoverFragment : Fragment() {
             findNavController().navigate(toBrowse)
         }
         // Do all observe stuff here
-        discoverAdapter = DiscoverAdapter(onWebtoonClick, onDiscoverClick)
+        discoverAdapter = DiscoverAdapter(onWebtoonClick, onWebtoonLongClick, onDiscoverClick)
         binding.discoverScroll.adapter = discoverAdapter
 
         binding.searchBar.setOnEditorActionListener { textView, i, keyEvent ->

@@ -12,6 +12,7 @@ import com.mehul.woons.entities.WebtoonsPage
 // onDiscoverClick will be used to navigate to the browse fragment
 class DiscoverAdapter(
     val onWebtoonClick: (Webtoon) -> Unit,
+    val onWebtoonLongClick: (Webtoon) -> Unit,
     val onDiscoverClick: (String) -> Unit
 ) :
     RecyclerView.Adapter<DiscoverAdapter.DiscoverViewHolder>() {
@@ -43,9 +44,7 @@ class DiscoverAdapter(
                 onDiscoverClick(discoverItem.category)
             }
             binding.category.text = Constants.getDisplayCategory(discoverItem.category)
-            val webtoonAdapter = WebtoonAdapter(false) {
-                onWebtoonClick(it)
-            }
+            val webtoonAdapter = WebtoonAdapter(false, onWebtoonClick, onWebtoonLongClick)
             binding.categoryItems.adapter = webtoonAdapter
             webtoonAdapter.updateWebtoons(discoverItem.items)
 

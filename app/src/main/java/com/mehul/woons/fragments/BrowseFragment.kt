@@ -9,16 +9,20 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mehul.woons.Constants
 import com.mehul.woons.MainActivity
 import com.mehul.woons.adapters.WebtoonAdapter
+import com.mehul.woons.addOrRemoveFromLibrary
 import com.mehul.woons.calculateNoOfColumns
 import com.mehul.woons.databinding.FragmentBrowseBinding
 import com.mehul.woons.entities.Resource
+import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.viewmodels.BrowseViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
@@ -40,10 +44,16 @@ class BrowseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val onWebtoonClick = { webtoon: Webtoon ->
+            Timber.e(webtoon.toString())
+        }
         // Do all observe stuff here
-        val browseAdapter = WebtoonAdapter(true) {
-            // go to info fragment
-            Timber.e(it.toString())
+        val browseAdapter = WebtoonAdapter(true, onWebtoonClick) {
+            // long click so change library
+            lifecycleScope.launch {
+                addOrRemoveFromLibrary(requireContext(), browseViewModel.libraryRepository, it)
+            }
         }
         binding.browseScroll.layoutManager =
             GridLayoutManager(

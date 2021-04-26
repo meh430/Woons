@@ -130,8 +130,7 @@ class WebtoonInfoViewModel(
                 Webtoon(
                     name = currWebtoon.name,
                     internalName = currWebtoon.internalName,
-                    coverImage = currWebtoon.coverImage,
-                    numChapters = currWebtoon.numChapters
+                    coverImage = currWebtoon.coverImage
                 )
             )
 

@@ -8,7 +8,11 @@ import com.mehul.woons.databinding.WebtoonItem2Binding
 import com.mehul.woons.databinding.WebtoonItemBinding
 import com.mehul.woons.entities.Webtoon
 
-class WebtoonAdapter(val isGrid: Boolean, val onClick: (Webtoon) -> Unit) :
+class WebtoonAdapter(
+    val isGrid: Boolean,
+    val onClick: (Webtoon) -> Unit,
+    val onLongClick: (Webtoon) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var webtoons: List<Webtoon> = ArrayList()
 
@@ -56,6 +60,10 @@ class WebtoonAdapter(val isGrid: Boolean, val onClick: (Webtoon) -> Unit) :
     inner class WebtoonGridViewHolder(private val binding: WebtoonItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(wt: Webtoon) {
+            binding.root.setOnLongClickListener {
+                onLongClick(wt)
+                true
+            }
             binding.root.setOnClickListener {
                 onClick(wt)
             }
@@ -72,10 +80,13 @@ class WebtoonAdapter(val isGrid: Boolean, val onClick: (Webtoon) -> Unit) :
     inner class WebtoonHorizontalViewHolder(private val binding: WebtoonItem2Binding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(wt: Webtoon) {
+            binding.root.setOnLongClickListener {
+                onLongClick(wt)
+                true
+            }
             binding.root.setOnClickListener {
                 onClick(wt)
             }
-
             binding.title.text = if (wt.name.length >= 20) {
                 wt.name.slice(0..16) + "..."
             } else {
