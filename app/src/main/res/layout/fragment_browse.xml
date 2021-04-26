@@ -6,12 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".fragments.BrowseFragment">
 
+    <ProgressBar
+        android:id="@+id/loading"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true" />
 
     <EditText
         android:id="@+id/browseSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/loading"
         android:layout_marginStart="18dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="18dp"
@@ -19,26 +27,19 @@
         android:background="@drawable/search_focus"
         android:drawableStart="@drawable/ic_search"
         android:hint="Search"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
         android:padding="10dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textCursorDrawable="@color/black" />
 
-    <ProgressBar
-        android:id="@+id/loading"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/browseSearch"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:indeterminate="true" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/browseScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/loading"
+        android:layout_below="@id/browseSearch"
         android:layout_centerHorizontal="true"
         android:clipToPadding="false"
         android:orientation="vertical"

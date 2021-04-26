@@ -34,10 +34,12 @@ class BrowseViewModel(application: Application) : AndroidViewModel(application) 
         // Ensure that list becomes empty for each search
         viewModelScope.launch {
             currentPage.value = Resource.loading()
+            webtoons.value?.clear()
+            webtoons.notifyObserver()
+
             val searchResult = kotlin.runCatching { webtoonApiRepository.searchWebtoons(query) }
             searchResult.onSuccess {
                 currentPage.value = Resource.success(it)
-                webtoons.value?.clear()
                 webtoons.value?.addAll(it.items)
                 webtoons.notifyObserver()
             }

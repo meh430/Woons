@@ -1,9 +1,12 @@
 package com.mehul.woons.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,6 +45,27 @@ class DiscoverFragment : Fragment() {
         // Do all observe stuff here
         discoverAdapter = DiscoverAdapter(onWebtoonClick, onDiscoverClick)
         binding.discoverScroll.adapter = discoverAdapter
+
+        binding.searchBar.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
+                // hide kb
+                binding.searchBar.clearFocus()
+                (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                    .hideSoftInputFromWindow(binding.searchBar.windowToken, 0)
+                // navigate to search browse
+                val toSearchBrowse =
+                    DiscoverFragmentDirections.actionDiscoverFragmentToBrowseFragment(
+                        true,
+                        binding.searchBar.text.toString()
+                    )
+
+                findNavController().navigate(toSearchBrowse)
+                true
+            }
+
+            false
+        }
+
 
         discoverViewModel.discoverLists.observe(viewLifecycleOwner) {
             when (it.status) {

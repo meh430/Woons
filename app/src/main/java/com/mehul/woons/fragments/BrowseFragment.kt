@@ -1,9 +1,12 @@
 package com.mehul.woons.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -56,6 +59,19 @@ class BrowseFragment : Fragment() {
             // Ensure that no data has been loaded already
             if (browseViewModel.webtoons.value?.isEmpty() == true) {
                 browseViewModel.performSearch(browseArgs.category)
+                binding.browseSearch.setOnEditorActionListener { textView, i, keyEvent ->
+                    if (i == EditorInfo.IME_ACTION_SEARCH) {
+                        // hide kb
+                        binding.browseSearch.clearFocus()
+                        (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                            .hideSoftInputFromWindow(binding.browseSearch.windowToken, 0)
+                        // Search with new query
+                        browseViewModel.performSearch(binding.browseSearch.text.toString())
+                        true
+                    }
+
+                    false
+                }
             }
         } else {
             binding.browseSearch.visibility = View.GONE
