@@ -34,15 +34,16 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
     // Call after categories is loaded!
     fun updateDiscoverLists() {
         viewModelScope.launch {
-            val cats = categories.value!!.data!!
+            val categs = categories.value!!.data!!
             // Add loadings
-            cats.forEach {
-                discoverLists.value?.add(Resource.loading())
+            categs.forEach {
+                discoverLists.value?.add(Resource.loading(WebtoonsPage(category = it)))
                 discoverLists.notifyObserver()
             }
 
             // Start retrieving data concurrently
-            val deferredDiscovers = cats.map { async { getPage(it) } }
+            val deferredDiscovers = categs.map { async { getPage(it) } }
+            discoverLists.value?.clear()
             deferredDiscovers.awaitAll().forEachIndexed { index, resource ->
                 discoverLists.value!![index] = resource
                 discoverLists.notifyObserver()
@@ -54,7 +55,8 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
         val currPage = kotlin.runCatching { webtoonApiRepository.getWebtoons(PAGE, category) }
         var retval: Resource<WebtoonsPage> = Resource.loading()
         currPage.onSuccess {
-            retval = Resource.success(it)
+            // make a new page with the correct category in place
+            retval = Resource.success(it.copy(category = category))
         }
         currPage.onFailure {
             retval = Resource.error(it.message)

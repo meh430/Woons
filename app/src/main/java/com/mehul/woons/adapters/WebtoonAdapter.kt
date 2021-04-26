@@ -9,7 +9,7 @@ import com.mehul.woons.entities.Webtoon
 
 class WebtoonAdapter(val onClick: (Webtoon) -> Unit) :
     RecyclerView.Adapter<WebtoonAdapter.WebtoonViewHolder>() {
-    var webtoons: List<Webtoon> = ArrayList<Webtoon>()
+    var webtoons: List<Webtoon> = ArrayList()
 
     fun updateWebtoons(l: List<Webtoon>) {
         webtoons = l
@@ -21,13 +21,12 @@ class WebtoonAdapter(val onClick: (Webtoon) -> Unit) :
         return WebtoonViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: WebtoonViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: WebtoonViewHolder, position: Int) =
         holder.bind(webtoons[position])
-    }
 
-    override fun getItemCount(): Int {
-        return webtoons.size
-    }
+
+    override fun getItemCount() = webtoons.size
+
 
     inner class WebtoonViewHolder(val binding: WebtoonItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
