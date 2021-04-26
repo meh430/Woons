@@ -11,6 +11,7 @@ import com.mehul.woons.entities.WebtoonsPage
 import com.mehul.woons.notifyObserver
 import com.mehul.woons.repositories.WebtoonApiRepository
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class BrowseViewModel(application: Application) : AndroidViewModel(application) {
@@ -30,6 +31,7 @@ class BrowseViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun performSearch(query: String) {
+        // Ensure that list becomes empty for each search
         viewModelScope.launch {
             currentPage.value = Resource.loading()
             val searchResult = kotlin.runCatching { webtoonApiRepository.searchWebtoons(query) }
@@ -49,6 +51,7 @@ class BrowseViewModel(application: Application) : AndroidViewModel(application) 
         if (reachedEnd) {
             return
         }
+        Timber.e(pageNum.toString())
         viewModelScope.launch {
             currentPage.value = Resource.loading()
             val fetchResult =
