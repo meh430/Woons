@@ -53,7 +53,7 @@ class DiscoverAdapter(
                     binding.category.text = discoverItem.data!!.category
 
                     binding.categoryItems.visibility = View.VISIBLE
-                    val webtoonAdapter = WebtoonAdapter {
+                    val webtoonAdapter = WebtoonAdapter(false) {
                         onWebtoonClick(it)
                     }
                     binding.categoryItems.adapter = webtoonAdapter

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.mehul.woons.entities.Webtoon
 
-@Database(entities = [Webtoon::class], version = 1, exportSchema = false)
+@Database(entities = [Webtoon::class], version = 2, exportSchema = false)
 abstract class LibraryDatabase : RoomDatabase() {
 
     abstract fun libraryDao(): LibraryDao

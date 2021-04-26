@@ -43,7 +43,7 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
 
             // Start retrieving data concurrently
             val deferredDiscovers = categs.map { async { getPage(it) } }
-            discoverLists.value?.clear()
+            //discoverLists.value?.clear()
             deferredDiscovers.awaitAll().forEachIndexed { index, resource ->
                 discoverLists.value!![index] = resource
                 discoverLists.notifyObserver()

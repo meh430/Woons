@@ -3,7 +3,6 @@ package com.mehul.woons.viewmodels
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mehul.woons.WoonsApplication
 import com.mehul.woons.entities.Resource
@@ -21,13 +20,12 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
     @Inject
     lateinit var webtoonApiRepository: WebtoonApiRepository
 
-    val initialLoading: MutableLiveData<Boolean> = MutableLiveData()
     val libraryWebtoons: LiveData<Resource<List<Webtoon>>> =
         loadLocalData { libraryRepository.getLibraryWebtoons() }
 
     init {
         (application as WoonsApplication).appComponent.injectIntoLibrary(this)
-        initialLoading.value = true
+        //populateTable()
     }
 
     // For testing

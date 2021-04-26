@@ -61,7 +61,7 @@ class LibraryFragment : Fragment() {
     }
 
     private fun initializeAdapter() {
-        libraryAdapter = WebtoonAdapter {
+        libraryAdapter = WebtoonAdapter(true) {
             // Launch info fragment
         }
         binding.webtoonScroll.layoutManager =
