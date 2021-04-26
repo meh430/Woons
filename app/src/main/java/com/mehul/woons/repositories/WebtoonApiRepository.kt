@@ -48,4 +48,8 @@ class WebtoonApiRepository @Inject constructor(val webtoonApi: WebtoonApi) {
             }
             webtoons
         }
+
+    suspend fun getDiscover(): List<WebtoonsPage> = withContext(Dispatchers.IO) {
+        webtoonApi.getDiscover()
+    }
 }

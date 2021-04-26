@@ -1,11 +1,10 @@
 package com.mehul.woons.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.mehul.woons.Constants
 import com.mehul.woons.databinding.DiscoverItemBinding
-import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.entities.WebtoonsPage
 
@@ -17,9 +16,9 @@ class DiscoverAdapter(
 ) :
     RecyclerView.Adapter<DiscoverAdapter.DiscoverViewHolder>() {
 
-    var discoverItems: List<Resource<WebtoonsPage>> = ArrayList()
+    var discoverItems: List<WebtoonsPage> = ArrayList()
 
-    fun updateDiscoverItems(l: List<Resource<WebtoonsPage>>) {
+    fun updateDiscoverItems(l: List<WebtoonsPage>) {
         discoverItems = l
         notifyDataSetChanged()
     }
@@ -39,40 +38,17 @@ class DiscoverAdapter(
     inner class DiscoverViewHolder(val binding: DiscoverItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(discoverItem: Resource<WebtoonsPage>) {
-            when (discoverItem.status) {
-                Resource.Status.SUCCESS -> {
-                    binding.discoverItemLayout.visibility = View.VISIBLE
-                    binding.loadingCategory.visibility = View.GONE
-                    binding.error.error.visibility = View.GONE
-
-                    binding.categoryTitleBar.setOnClickListener {
-                        onDiscoverClick(discoverItem.data!!.category)
-                    }
-
-                    binding.category.text = discoverItem.data!!.category
-
-                    binding.categoryItems.visibility = View.VISIBLE
-                    val webtoonAdapter = WebtoonAdapter(false) {
-                        onWebtoonClick(it)
-                    }
-                    binding.categoryItems.adapter = webtoonAdapter
-                    webtoonAdapter.updateWebtoons(discoverItem.data.items)
-                }
-                Resource.Status.LOADING -> {
-                    binding.discoverItemLayout.visibility = View.VISIBLE
-                    binding.categoryItems.visibility = View.GONE
-                    binding.error.error.visibility = View.GONE
-                    binding.loadingCategory.visibility = View.VISIBLE
-
-                    binding.category.text = discoverItem.data!!.category
-                }
-                Resource.Status.ERROR -> {
-                    binding.discoverItemLayout.visibility = View.GONE
-                    binding.error.error.visibility = View.VISIBLE
-                    binding.error.errorLabel.text = discoverItem.message!!
-                }
+        fun bind(discoverItem: WebtoonsPage) {
+            binding.categoryTitleBar.setOnClickListener {
+                onDiscoverClick(discoverItem.category)
             }
+            binding.category.text = Constants.getDisplayCategory(discoverItem.category)
+            val webtoonAdapter = WebtoonAdapter(false) {
+                onWebtoonClick(it)
+            }
+            binding.categoryItems.adapter = webtoonAdapter
+            webtoonAdapter.updateWebtoons(discoverItem.items)
+
         }
     }
 }

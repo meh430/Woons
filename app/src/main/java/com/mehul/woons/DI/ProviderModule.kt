@@ -2,6 +2,7 @@ package com.mehul.woons.DI
 
 import android.app.Application
 import com.mehul.woons.Constants
+import com.mehul.woons.local.DiscoverCacheDatabase
 import com.mehul.woons.local.LibraryDatabase
 import com.mehul.woons.local.ReadChaptersDatabase
 import com.mehul.woons.remote.WebtoonApi
@@ -10,6 +11,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 // Provides daos, databases, retrofit, gson, services
@@ -35,6 +37,11 @@ class ProviderModule {
 
     @Singleton
     @Provides
+    fun provideDiscoverCacheDatabase(application: Application) =
+        DiscoverCacheDatabase.getDatabase(application)
+
+    @Singleton
+    @Provides
     fun provideLibraryDao(libraryDatabase: LibraryDatabase) = libraryDatabase.libraryDao()
 
     @Singleton
@@ -44,8 +51,14 @@ class ProviderModule {
 
     @Singleton
     @Provides
+    fun provideDiscoverCacheDao(discoverCacheDatabase: DiscoverCacheDatabase) =
+        discoverCacheDatabase.discoverCacheDao()
+
+    @Singleton
+    @Provides
     fun provideHttpClient(): OkHttpClient {
-        val client = OkHttpClient.Builder()
+        val client = OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES)
+            .connectTimeout(1, TimeUnit.MINUTES)
         client.addInterceptor { chain ->
             val request = chain.request().newBuilder().addHeader("Accept", "application/json")
                 .addHeader("Content-Type", "application/json").build()

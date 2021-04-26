@@ -37,7 +37,7 @@ class DiscoverFragment : Fragment() {
         discoverAdapter = DiscoverAdapter(onWebtoonClick, onDiscoverClick)
         binding.discoverScroll.adapter = discoverAdapter
 
-        discoverViewModel.categories.observe(viewLifecycleOwner) {
+        discoverViewModel.discoverLists.observe(viewLifecycleOwner) {
             when (it.status) {
                 Resource.Status.LOADING -> {
                     binding.discoverScroll.visibility = View.GONE
@@ -54,15 +54,12 @@ class DiscoverFragment : Fragment() {
                 Resource.Status.SUCCESS -> {
                     binding.discoverLoading.visibility = View.GONE
                     binding.error.error.visibility = View.GONE
-                    discoverViewModel.updateDiscoverLists()
+                    binding.discoverScroll.visibility = View.VISIBLE
+                    discoverAdapter.updateDiscoverItems(it.data!!)
                 }
             }
         }
 
-        discoverViewModel.discoverLists.observe(viewLifecycleOwner) {
-            binding.discoverScroll.visibility = View.VISIBLE
-            discoverAdapter.updateDiscoverItems(it)
-        }
     }
 
     override fun onDestroyView() {

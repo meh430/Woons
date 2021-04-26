@@ -29,4 +29,7 @@ interface WebtoonApi {
         @Path("internalName") internalName: String,
         @Path("internalChapterReference") internalChapterReference: String
     ): List<String>
+
+    @GET("discover")
+    suspend fun getDiscover(): List<WebtoonsPage>
 }

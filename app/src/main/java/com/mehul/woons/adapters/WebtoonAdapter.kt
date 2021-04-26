@@ -9,7 +9,7 @@ import com.mehul.woons.databinding.WebtoonItemBinding
 import com.mehul.woons.entities.Webtoon
 
 class WebtoonAdapter(val isGrid: Boolean, val onClick: (Webtoon) -> Unit) :
-    RecyclerView.Adapter<WebtoonAdapter.WebtoonViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var webtoons: List<Webtoon> = ArrayList()
 
     fun updateWebtoons(l: List<Webtoon>) {
@@ -17,19 +17,17 @@ class WebtoonAdapter(val isGrid: Boolean, val onClick: (Webtoon) -> Unit) :
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WebtoonViewHolder {
-        return if (isGrid) {
-            WebtoonViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (viewType == WEBTOON_GRID) {
+            WebtoonGridViewHolder(
                 WebtoonItemBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
-                ),
-                null
+                )
             )
         } else {
-            WebtoonViewHolder(
-                null,
+            WebtoonHorizontalViewHolder(
                 WebtoonItem2Binding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
@@ -39,40 +37,58 @@ class WebtoonAdapter(val isGrid: Boolean, val onClick: (Webtoon) -> Unit) :
         }
     }
 
-    override fun onBindViewHolder(holder: WebtoonViewHolder, position: Int) =
-        holder.bind(webtoons[position])
+    override fun getItemViewType(position: Int): Int {
+        return if (isGrid) WEBTOON_GRID else WEBTOON_HORIZONTAL
+    }
 
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder.itemViewType == WEBTOON_GRID) {
+            (holder as WebtoonGridViewHolder).bind(webtoons[position])
+        } else {
+            (holder as WebtoonHorizontalViewHolder).bind(webtoons[position])
+        }
+    }
 
     override fun getItemCount() = webtoons.size
 
 
-    inner class WebtoonViewHolder(
-        private val binding: WebtoonItemBinding?,
-        private val binding2: WebtoonItem2Binding?
-    ) :
-        RecyclerView.ViewHolder(binding?.root ?: binding2!!.root) {
-
+    inner class WebtoonGridViewHolder(private val binding: WebtoonItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(wt: Webtoon) {
-            if (binding != null) {
-                binding.root.setOnClickListener {
-                    onClick(wt)
-                }
-                binding.title.text = wt.name
-                Glide.with(binding.coverImage.context).load(wt.coverImage).centerCrop()
-                    .into(binding.coverImage)
-            } else {
-                binding2!!.root.setOnClickListener {
-                    onClick(wt)
-                }
-
-                binding2.title.text = if (wt.name.length >= 20) {
-                    wt.name.slice(0..16) + "..."
-                } else {
-                    wt.name
-                }
-                Glide.with(binding2.coverImage.context).load(wt.coverImage).centerCrop()
-                    .into(binding2.coverImage)
+            binding.root.setOnClickListener {
+                onClick(wt)
             }
+            binding.title.text = if (wt.name.length >= 20) {
+                wt.name.slice(0..16) + "..."
+            } else {
+                wt.name
+            }
+            Glide.with(binding.coverImage.context).load(wt.coverImage).centerCrop()
+                .into(binding.coverImage)
         }
+    }
+
+    inner class WebtoonHorizontalViewHolder(private val binding: WebtoonItem2Binding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(wt: Webtoon) {
+            binding.root.setOnClickListener {
+                onClick(wt)
+            }
+
+            binding.title.text = if (wt.name.length >= 20) {
+                wt.name.slice(0..16) + "..."
+            } else {
+                wt.name
+            }
+            Glide.with(binding.coverImage.context).load(wt.coverImage).centerCrop()
+                .into(binding.coverImage)
+        }
+    }
+
+
+    companion object {
+        const val WEBTOON_GRID = 0
+        const val WEBTOON_HORIZONTAL = 1
     }
 }
