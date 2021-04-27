@@ -15,6 +15,9 @@ interface DiscoverCacheDao {
     @Query("SELECT * FROM DiscoverCache")
     fun getDiscoverCache(): LiveData<List<WebtoonsPage>>
 
+    @Query("SELECT * FROM DiscoverCache")
+    fun getNonLiveDiscoverCache(): List<WebtoonsPage>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveDiscoverCache(cache: List<WebtoonsPage>)
 }

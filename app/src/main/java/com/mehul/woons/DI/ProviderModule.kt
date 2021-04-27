@@ -1,7 +1,9 @@
 package com.mehul.woons.DI
 
 import android.app.Application
+import com.google.gson.Gson
 import com.mehul.woons.Constants
+import com.mehul.woons.local.DiscoverCacheConverter
 import com.mehul.woons.local.DiscoverCacheDatabase
 import com.mehul.woons.local.LibraryDatabase
 import com.mehul.woons.local.ReadChaptersDatabase
@@ -18,13 +20,16 @@ import javax.inject.Singleton
 @Module
 class ProviderModule {
 
-    // TODO: add endpoint
     @Singleton
     @Provides
     fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder().baseUrl(Constants.ENDPOINT).client(client)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
+
+    @Singleton
+    @Provides
+    fun provideGson() = Gson()
 
     @Singleton
     @Provides
@@ -37,8 +42,11 @@ class ProviderModule {
 
     @Singleton
     @Provides
-    fun provideDiscoverCacheDatabase(application: Application) =
-        DiscoverCacheDatabase.getDatabase(application)
+    fun provideDiscoverCacheDatabase(
+        application: Application,
+        discoverCacheConverter: DiscoverCacheConverter
+    ) =
+        DiscoverCacheDatabase.getDatabase(application, discoverCacheConverter)
 
     @Singleton
     @Provides

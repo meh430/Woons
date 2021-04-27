@@ -3,6 +3,7 @@ package com.mehul.woons.entities
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import java.util.*
 
 // This will be the result when searching or browsing a category
 // Also will be cached for discover
@@ -12,5 +13,6 @@ data class WebtoonsPage(
     var category: String = "",
     @Ignore val currentPage: Int = 1,
     @Ignore val lastPage: Int = 1,
-    var items: List<Webtoon> = listOf()
+    var items: List<Webtoon> = listOf(),
+    var createdAt: Long = Date().time
 )
