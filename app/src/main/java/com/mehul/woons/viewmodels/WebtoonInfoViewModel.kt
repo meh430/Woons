@@ -59,7 +59,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     // call first in fragment
-    fun initializeData(
+    fun initializeInfo(
         name: String, // actual name
         internalName: String // api name
     ) {
@@ -74,7 +74,8 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
             }
 
             // Get the webtoon info
-            val infoResult = runCatching { webtoonApiRepository.getWebtoonInfo(internalName) }
+            val infoResult =
+                kotlin.runCatching { webtoonApiRepository.getWebtoonInfo(internalName) }
             // Issue with network so all fails
             infoResult.onFailure {
                 webtoonInfo.value = Resource.error(message = it.message)
