@@ -42,8 +42,6 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Do all observe stuff here
-        (activity as MainActivity).supportActionBar?.title = infoArgs.name
-        (activity as MainActivity).binding.appbar.setExpanded(true, true)
         val onLibraryClick = {
             if (infoViewModel.inLibrary) {
                 infoViewModel.removeFromLibrary()
@@ -74,6 +72,8 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
 
         // Observing changes to read chapters, so we can refresh all chapters
         infoViewModel.changedRead.observe(viewLifecycleOwner) {
+            (activity as MainActivity).supportActionBar?.title = infoArgs.name
+            (activity as MainActivity).binding.appbar.setExpanded(true, true)
             Timber.e("CHANGED READ")
             if (infoViewModel.webtoonInfo.value!!.status != Resource.Status.SUCCESS) {
                 return@observe
@@ -89,7 +89,9 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
             chapterHeaderAdapter.updateInfo(it)
         }
         infoViewModel.webtoonIdLive.observe(viewLifecycleOwner) {
-            infoHeaderAdapter.updateInLibrary(it != LibraryRepository.NOT_IN_LIBRARY)
+            val inLibrary = it != LibraryRepository.NOT_IN_LIBRARY
+            chapterAdapter.updateInLibrary(inLibrary)
+            infoHeaderAdapter.updateInLibrary(inLibrary)
         }
 
     }

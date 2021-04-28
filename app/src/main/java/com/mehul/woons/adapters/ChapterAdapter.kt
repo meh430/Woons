@@ -19,49 +19,17 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
     RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder>() {
 
     var chapterItems: List<Chapter> = ArrayList()
+    var inLibrary = false
 
     fun updateChapterItems(items: List<Chapter>) {
         chapterItems = items
         notifyDataSetChanged()
     }
 
-    /*override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder = when (viewType) {
-        SUCCESS -> {
-            ChapterViewHolder(
-                ChapterItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-        }
-        LOADING -> {
-            ChapterLoadingViewHolder(
-                ChapterLoadingBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-        }
-        ERROR -> {
-            ChapterErrorViewHolder(
-                ErrorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            )
-        }
-        else -> {
-            ChapterLoadingViewHolder(
-                ChapterLoadingBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
-        }
-    }*/
+    fun updateInLibrary(inLib: Boolean) {
+        inLibrary = inLib
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -74,30 +42,11 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
         )
     )
 
-    /*override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Timber.e(chapterItems.status.toString())
-        when (holder.itemViewType) {
-            SUCCESS -> {
-                (holder as ChapterViewHolder).bind(chapterItems.data!![position], position)
-            }
-            LOADING -> {
-                (holder as ChapterLoadingViewHolder).binding.chapterLoading.visibility =
-                    View.VISIBLE
-            }
-            ERROR -> {
-                (holder as ChapterErrorViewHolder).bind(chapterItems.message!!)
-            }
-        }
-    }*/
-
     override fun onBindViewHolder(holder: ChapterViewHolder, position: Int) {
         holder.bind(chapterItems[position], position)
     }
 
-    /*override fun getItemCount(): Int = when (chapterItems.status) {
-        Resource.Status.SUCCESS -> chapterItems.data!!.size
-        Resource.Status.LOADING, Resource.Status.ERROR -> 1
-    }*/
+
     override fun getItemCount(): Int = chapterItems.size
 
     interface ChapterItemListener {
@@ -151,7 +100,9 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
             // open up bottom sheet with options on marking chapters as read
             binding.root.setOnLongClickListener {
                 Timber.e("LONG CLICK")
-                showSheet(binding.root.context, chapter, position)
+                if (inLibrary) {
+                    showSheet(binding.root.context, chapter, position)
+                }
                 true
             }
         }

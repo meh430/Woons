@@ -12,6 +12,8 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:clipToPadding="false"
         android:orientation="vertical"
+        android:paddingBottom="?attr/actionBarSize"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 </RelativeLayout>

@@ -2,16 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/error"
-    android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     android:visibility="gone">
 
     <ImageView
         android:id="@id/errorIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_margin="10dp"
         android:scaleType="centerCrop"
@@ -25,6 +26,7 @@
         android:layout_below="@+id/errorIcon"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:maxLength="140"
         android:text="Error Label"
         android:textAppearance="?attr/textAppearanceListItem" />
 </RelativeLayout>

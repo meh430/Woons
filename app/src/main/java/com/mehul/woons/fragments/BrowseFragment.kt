@@ -45,7 +45,6 @@ class BrowseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as MainActivity).binding.appbar.setExpanded(true, true)
 
         val onWebtoonClick = { webtoon: Webtoon ->
             Timber.e(webtoon.toString())
@@ -97,6 +96,7 @@ class BrowseFragment : Fragment() {
         }
 
         browseViewModel.currentPage.observe(viewLifecycleOwner) {
+            (activity as MainActivity).binding.appbar.setExpanded(true, true)
             if (browseArgs.isSearch) {
                 (activity as MainActivity).supportActionBar?.title = "Search"
             } else {

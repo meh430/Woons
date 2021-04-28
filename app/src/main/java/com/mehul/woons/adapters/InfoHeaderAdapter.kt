@@ -60,7 +60,11 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
                         webtoonTitle.text = setNotEmpty(currWebtoon.name, "title")
                         author.text = setNotEmpty(currWebtoon.author, "author")
                         artist.text = setNotEmpty(currWebtoon.artist, "artist")
-                        rating.text = setNotEmpty(currWebtoon.rating, "rating")
+                        rating.text = if (currWebtoon.rating.isNotEmpty()) {
+                            currWebtoon.rating + "/5"
+                        } else {
+                            setNotEmpty("", "rating")
+                        }
                         summary.text = setNotEmpty(currWebtoon.summary, "summary")
                     }
 
