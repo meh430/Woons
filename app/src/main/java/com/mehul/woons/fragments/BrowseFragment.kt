@@ -77,9 +77,9 @@ class BrowseFragment : Fragment() {
                         // Search with new query
                         browseViewModel.performSearch(binding.browseSearch.text.toString())
                         true
+                    } else {
+                        false
                     }
-
-                    false
                 }
             }
         } else {

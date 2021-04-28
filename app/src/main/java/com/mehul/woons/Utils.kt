@@ -7,10 +7,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
+import com.mehul.woons.entities.Chapter
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.repositories.LibraryRepository
+import com.mehul.woons.repositories.ReadChaptersRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 fun <T> loadLocalData(localCall: suspend () -> LiveData<T>): LiveData<Resource<T>> =
@@ -75,3 +78,34 @@ suspend fun addOrRemoveFromLibrary(
         Toast.makeText(context, "Added ${webtoon.name} to library", Toast.LENGTH_SHORT).show()
     }
 }
+
+suspend fun getUpdatedAllChapters(
+    chRep: ReadChaptersRepository,
+    inLibrary: Boolean,
+    webtoonId: Long,
+    ac: List<Chapter>
+) =
+    withContext(Dispatchers.Default) {
+        val readChs = if (inLibrary) {
+            chRep.getNonLiveReadChapters(webtoonId)
+        } else {
+            ArrayList()
+        }
+
+        // Create map with name as key and chapter as value
+        val readNamesMap =
+            readChs.map { it.internalChapterReference to it }.toMap()
+        val currAllChapters = ac.map { it.copy() }
+        // Update whether has read and add ids to available ones
+        for (ch in currAllChapters) {
+            val hasRead = readNamesMap.containsKey(ch.internalChapterReference)
+            ch.hasRead = hasRead
+            // If in map (read chapter), then update id for future reference (deletions)
+            ch.id = if (hasRead) {
+                readNamesMap[ch.internalChapterReference]!!.id
+            } else {
+                0
+            }
+        }
+        currAllChapters
+    }

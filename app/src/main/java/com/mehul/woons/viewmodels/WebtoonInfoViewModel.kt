@@ -7,12 +7,11 @@ import com.mehul.woons.entities.Chapter
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.entities.WebtoonChapters
+import com.mehul.woons.getUpdatedAllChapters
 import com.mehul.woons.repositories.LibraryRepository
 import com.mehul.woons.repositories.ReadChaptersRepository
 import com.mehul.woons.repositories.WebtoonApiRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WebtoonInfoViewModel(application: Application) : AndroidViewModel(application) {
@@ -75,8 +74,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
             }
 
             // Get the webtoon info
-            val infoResult =
-                kotlin.runCatching { webtoonApiRepository.getWebtoonInfo(internalName) }
+            val infoResult = runCatching { webtoonApiRepository.getWebtoonInfo(internalName) }
             // Issue with network so all fails
             infoResult.onFailure {
                 webtoonInfo.value = Resource.error(message = it.message)
@@ -94,42 +92,27 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
             }
 
             // get all chapters
-            val allChaptersResult: List<Chapter> = getUpdatedAllChapters()
+            val allChaptersResult: List<Chapter> = getUpdatedAllChapters(
+                chaptersRepository,
+                inLibrary,
+                webtoonIdLive.value!!,
+                webtoonInfo.value!!.data!!.chapters
+            )
             allChapters.value = Resource.success(allChaptersResult)
         }
     }
 
-    // Requires webtoon info to be loaded
-    private suspend fun getUpdatedAllChapters() = withContext(Dispatchers.Default) {
-        val readChs = if (inLibrary) {
-            chaptersRepository.getNonLiveReadChapters(webtoonIdLive.value!!)
-        } else {
-            ArrayList()
-        }
-
-        // Create map with name as key and chapter as value
-        val readNamesMap =
-            readChs.map { it.internalChapterReference to it }.toMap()
-        val currAllChapters = webtoonInfo.value!!.data!!.chapters
-        // Update whether has read and add ids to available ones
-        for (ch in currAllChapters) {
-            val hasRead = readNamesMap.containsKey(ch.internalChapterReference)
-            ch.hasRead = hasRead
-            // If in map (read chapter), then update id for future reference (deletions)
-            ch.id = if (hasRead) {
-                readNamesMap[ch.internalChapterReference]!!.id
-            } else {
-                0
-            }
-        }
-        currAllChapters
-    }
 
     // Whenever there is a change in read chapters, call this so all chapters can be updated
     fun updateAllChapters() {
         viewModelScope.launch {
             allChapters.value = Resource.loading()
-            val allChaptersResult: List<Chapter> = getUpdatedAllChapters()
+            val allChaptersResult: List<Chapter> = getUpdatedAllChapters(
+                chaptersRepository,
+                inLibrary,
+                webtoonIdLive.value!!,
+                webtoonInfo.value!!.data!!.chapters
+            )
             allChapters.value = Resource.success(allChaptersResult)
         }
     }
@@ -166,7 +149,6 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
         }
     }
 
-    // TODO: update counts
     fun markSingleRead(position: Int) {
         if (!inLibrary) {
             return
@@ -175,9 +157,15 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             val markedCh = allChapters.value!!.data!![position].copy()
             if (!markedCh.hasRead) {
-                markedCh.id = 0
-                markedCh.webtoonId = webtoonIdLive.value!!
-                chaptersRepository.insertReadChapter(markedCh)
+                //markedCh.id = 0
+                //markedCh.webtoonId = webtoonIdLive.value!!
+                chaptersRepository.insertReadChapter(
+                    Chapter(
+                        webtoonId = webtoonIdLive.value!!,
+                        chapterNumber = markedCh.chapterNumber,
+                        uploadDate = markedCh.uploadDate
+                    )
+                )
             }
         }
     }
@@ -195,10 +183,15 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
                 allChapters.value!!.data!!.slice(cutOff until allChaptersLength).filter {
                     !it.hasRead
                 }.map {
-                    val ch = it.copy()
-                    ch.id = 0
-                    ch.webtoonId = webtoonIdLive.value!!
-                    ch
+                    //val ch = it.copy()
+                    //ch.id = 0
+                    //ch.webtoonId = webtoonIdLive.value!!
+                    //ch
+                    Chapter(
+                        webtoonId = webtoonIdLive.value!!,
+                        chapterNumber = it.chapterNumber,
+                        uploadDate = it.uploadDate
+                    )
                 }
             chaptersRepository.insertAllReadChapters(markedChapters)
         }
