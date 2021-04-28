@@ -21,8 +21,8 @@ class WebtoonAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == WEBTOON_GRID) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+        if (viewType == WEBTOON_GRID) {
             WebtoonGridViewHolder(
                 WebtoonItemBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -39,11 +39,9 @@ class WebtoonAdapter(
                 )
             )
         }
-    }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (isGrid) WEBTOON_GRID else WEBTOON_HORIZONTAL
-    }
+
+    override fun getItemViewType(position: Int) = if (isGrid) WEBTOON_GRID else WEBTOON_HORIZONTAL
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -15,27 +15,26 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
 
     fun updateInfo(info: Resource<WebtoonChapters>) {
         webtoonInfo = info
-        notifyItemChanged(1)
+        notifyItemChanged(0)
     }
 
     fun updateInLibrary(inLib: Boolean) {
         inLibrary = inLib
-        notifyItemChanged(1)
+        notifyItemChanged(0)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
-        return InfoViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder =
+        InfoViewHolder(
             InfoHeaderBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
-    }
 
-    override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        holder.bind(webtoonInfo)
-    }
+
+    override fun onBindViewHolder(holder: InfoViewHolder, position: Int) = holder.bind(webtoonInfo)
+
 
     override fun getItemCount(): Int = 1
 
