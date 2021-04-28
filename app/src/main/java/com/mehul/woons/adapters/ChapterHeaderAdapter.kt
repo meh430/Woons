@@ -27,7 +27,6 @@ class ChapterHeaderAdapter : RecyclerView.Adapter<ChapterHeaderAdapter.ChapterHe
         position: Int
     ) {
         holder.bind(webtoonInfo)
-        TODO("Not yet implemented")
     }
 
     override fun getItemCount(): Int = 1

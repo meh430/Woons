@@ -13,25 +13,23 @@ import com.mehul.woons.databinding.ChapterLoadingBinding
 import com.mehul.woons.databinding.ChapterSheetBinding
 import com.mehul.woons.databinding.ErrorBinding
 import com.mehul.woons.entities.Chapter
-import com.mehul.woons.entities.Resource
 import timber.log.Timber
 
 class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder>() {
 
-    var chapterItems: Resource<List<Chapter>> = Resource.loading()
+    var chapterItems: List<Chapter> = ArrayList()
 
-    fun updateChapterItems(items: Resource<List<Chapter>>) {
+    fun updateChapterItems(items: List<Chapter>) {
         chapterItems = items
         notifyDataSetChanged()
     }
 
-
-    override fun onCreateViewHolder(
+    /*override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecyclerView.ViewHolder = when (chapterItems.status) {
-        Resource.Status.SUCCESS -> {
+    ): RecyclerView.ViewHolder = when (viewType) {
+        SUCCESS -> {
             ChapterViewHolder(
                 ChapterItemBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -40,7 +38,7 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
                 )
             )
         }
-        Resource.Status.LOADING -> {
+        LOADING -> {
             ChapterLoadingViewHolder(
                 ChapterLoadingBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -49,31 +47,58 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
                 )
             )
         }
-        Resource.Status.ERROR -> {
+        ERROR -> {
             ChapterErrorViewHolder(
                 ErrorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         }
-    }
+        else -> {
+            ChapterLoadingViewHolder(
+                ChapterLoadingBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            )
+        }
+    }*/
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
-        when (chapterItems.status) {
-            Resource.Status.SUCCESS -> {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ChapterAdapter.ChapterViewHolder = ChapterViewHolder(
+        ChapterItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
+
+    /*override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        Timber.e(chapterItems.status.toString())
+        when (holder.itemViewType) {
+            SUCCESS -> {
                 (holder as ChapterViewHolder).bind(chapterItems.data!![position], position)
             }
-            Resource.Status.LOADING -> {
+            LOADING -> {
                 (holder as ChapterLoadingViewHolder).binding.chapterLoading.visibility =
                     View.VISIBLE
             }
-            Resource.Status.ERROR -> {
+            ERROR -> {
                 (holder as ChapterErrorViewHolder).bind(chapterItems.message!!)
             }
         }
+    }*/
 
-    override fun getItemCount(): Int = when (chapterItems.status) {
+    override fun onBindViewHolder(holder: ChapterViewHolder, position: Int) {
+        holder.bind(chapterItems[position], position)
+    }
+
+    /*override fun getItemCount(): Int = when (chapterItems.status) {
         Resource.Status.SUCCESS -> chapterItems.data!!.size
         Resource.Status.LOADING, Resource.Status.ERROR -> 1
-    }
+    }*/
+    override fun getItemCount(): Int = chapterItems.size
 
     interface ChapterItemListener {
         fun onChapterClick(chapter: Chapter)
@@ -138,5 +163,11 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
             binding.error.visibility = View.VISIBLE
             binding.errorLabel.text = message
         }
+    }
+
+    companion object {
+        const val SUCCESS = 0
+        const val LOADING = 1
+        const val ERROR = 2
     }
 }

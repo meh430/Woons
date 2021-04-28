@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.mehul.woons.databinding.InfoHeaderBinding
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.WebtoonChapters
@@ -38,8 +39,16 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
 
     override fun getItemCount(): Int = 1
 
+
     inner class InfoViewHolder(val binding: InfoHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        fun setNotEmpty(original: String, replace: String) = if (original.isEmpty()) {
+            "No $replace found!"
+        } else {
+            original
+        }
+
         fun bind(info: Resource<WebtoonChapters>) {
             when (info.status) {
                 Resource.Status.SUCCESS -> {
@@ -48,18 +57,22 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
                     val currWebtoon = info.data!!.webtoon
                     // Set all the text
                     binding.apply {
-                        webtoonTitle.text = currWebtoon.name
-                        author.text = currWebtoon.author
-                        artist.text = currWebtoon.artist
-                        rating.text = currWebtoon.rating
-                        summary.text = currWebtoon.summary
+                        webtoonTitle.text = setNotEmpty(currWebtoon.name, "title")
+                        author.text = setNotEmpty(currWebtoon.author, "author")
+                        artist.text = setNotEmpty(currWebtoon.artist, "artist")
+                        rating.text = setNotEmpty(currWebtoon.rating, "rating")
+                        summary.text = setNotEmpty(currWebtoon.summary, "summary")
                     }
+
+                    Glide.with(binding.coverImage.context).load(info.data.webtoon.coverImage)
+                        .centerCrop()
+                        .into(binding.coverImage)
 
                     // change button text
                     val libraryButtonText = if (inLibrary) {
                         "Remove from library"
                     } else {
-                        "Add to library'"
+                        "Add to library"
                     }
                     binding.libraryButton.text = libraryButtonText
 

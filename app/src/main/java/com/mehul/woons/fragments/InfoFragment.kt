@@ -16,6 +16,8 @@ import com.mehul.woons.adapters.ChapterHeaderAdapter
 import com.mehul.woons.adapters.InfoHeaderAdapter
 import com.mehul.woons.databinding.FragmentInfoBinding
 import com.mehul.woons.entities.Chapter
+import com.mehul.woons.entities.Resource
+import com.mehul.woons.repositories.LibraryRepository
 import com.mehul.woons.viewmodels.WebtoonInfoViewModel
 import kotlinx.coroutines.launch
 
@@ -42,6 +44,7 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
         (activity as MainActivity).supportActionBar?.title = infoArgs.name
         (activity as MainActivity).binding.appbar.setExpanded(true, true)
         val onLibraryClick = {
+
             if (infoViewModel.inLibrary) {
                 infoViewModel.removeFromLibrary()
             } else {
@@ -63,8 +66,25 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
         val chapterHeaderAdapter = ChapterHeaderAdapter()
         val chapterAdapter = ChapterAdapter(this)
         val mainAdapter = ConcatAdapter(infoHeaderAdapter, chapterHeaderAdapter, chapterAdapter)
+        binding.infoScroll.adapter = mainAdapter
 
-        // Observing changes to read chapters, so we can refresh view
+        infoViewModel.initializeInfo(infoArgs.name, infoArgs.internalName)
+
+        // Observing changes to read chapters, so we can refresh all chapters
+        infoViewModel.readChapters.observe(viewLifecycleOwner) {
+            infoViewModel.updateAllChapters()
+        }
+        infoViewModel.allChapters.observe(viewLifecycleOwner) {
+            chapterAdapter.updateChapterItems(if (it.status == Resource.Status.SUCCESS) it.data!! else ArrayList())
+        }
+        infoViewModel.webtoonInfo.observe(viewLifecycleOwner) {
+            infoHeaderAdapter.updateInfo(it)
+            chapterHeaderAdapter.updateInfo(it)
+        }
+        infoViewModel.webtoonIdLive.observe(viewLifecycleOwner) {
+            infoHeaderAdapter.updateInLibrary(it != LibraryRepository.NOT_IN_LIBRARY)
+        }
+
     }
 
     override fun onDestroyView() {
