@@ -244,4 +244,5 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
         if (resumeIndex != -1) chapters[resumeIndex] else null
     }
 
+    fun getLastChapter() = webtoonInfo.value!!.data!!.chapters[0]
 }
