@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.mehul.woons.Constants
 import com.mehul.woons.adapters.WebtoonAdapter
@@ -67,6 +68,11 @@ class LibraryFragment : Fragment() {
     private fun initializeAdapter() {
         val onWebtoonClick = { webtoon: Webtoon ->
             Timber.e(webtoon.toString())
+            val toInfo = LibraryFragmentDirections.actionLibraryFragmentToInfoFragment(
+                webtoon.name,
+                webtoon.internalName
+            )
+            findNavController().navigate(toInfo)
         }
         libraryAdapter = WebtoonAdapter(true, onWebtoonClick) {
             // long click so change library

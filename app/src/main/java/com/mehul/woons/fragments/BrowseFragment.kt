@@ -44,6 +44,7 @@ class BrowseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as MainActivity).binding.appbar.setExpanded(true, true)
 
         val onWebtoonClick = { webtoon: Webtoon ->
             Timber.e(webtoon.toString())

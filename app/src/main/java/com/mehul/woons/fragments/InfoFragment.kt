@@ -5,10 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import com.mehul.woons.MainActivity
 import com.mehul.woons.databinding.FragmentInfoBinding
 
 
 class InfoFragment : Fragment() {
+    private val infoArgs: InfoFragmentArgs by navArgs()
+
     private var _binding: FragmentInfoBinding? = null
     private val binding get() = _binding!!
 
@@ -21,10 +25,12 @@ class InfoFragment : Fragment() {
         return binding.root
     }
 
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Do all observe stuff here
-    }*/
+        (activity as MainActivity).supportActionBar?.title = infoArgs.name
+        (activity as MainActivity).binding.appbar.setExpanded(true, true)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

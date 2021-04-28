@@ -71,9 +71,6 @@
         android:label="fragment_reader"
         tools:layout="@layout/fragment_reader">
         <argument
-            android:name="name"
-            app:argType="string" />
-        <argument
             android:name="internalName"
             app:argType="string" />
         <argument
