@@ -11,7 +11,9 @@ import com.mehul.woons.getUpdatedAllChapters
 import com.mehul.woons.repositories.LibraryRepository
 import com.mehul.woons.repositories.ReadChaptersRepository
 import com.mehul.woons.repositories.WebtoonApiRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WebtoonInfoViewModel(application: Application) : AndroidViewModel(application) {
@@ -225,4 +227,21 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
             chaptersRepository.deleteManyReadChapters(markedChapters)
         }
     }
+
+    // After everything has been loaded? (called init). Make sure that allChapters is success before calling
+    // get the first chapter that has not been read yet
+    suspend fun getResumeChapter(): Chapter? = withContext(Dispatchers.Default) {
+        /*val chapters = getUpdatedAllChapters(
+            chaptersRepository,
+            inLibrary,
+            webtoonIdLive.value!!,
+            webtoonInfo.value!!.data!!.chapters
+        )*/
+        val chapters = allChapters.value!!.data!!
+
+        // gets first index of chapter that has not been read yet
+        val resumeIndex = chapters.indexOfFirst { !it.hasRead }
+        if (resumeIndex != -1) chapters[resumeIndex] else null
+    }
+
 }

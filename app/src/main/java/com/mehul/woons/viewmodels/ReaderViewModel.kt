@@ -75,6 +75,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
             }
             infoResult.onFailure {
                 // some network error so failed
+                // so on error, dont show buttons for prev and next because chapters not loaded!
                 chapterPages.value = Resource.error(it.message)
             }
         }
@@ -108,6 +109,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
     }
+
 
     // Only call when chapters has been loaded in. Since descending order, next chapter means decrement!
     fun nextChapter(internalName: String): Boolean {
