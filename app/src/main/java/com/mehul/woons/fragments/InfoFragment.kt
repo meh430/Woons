@@ -68,7 +68,9 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
         val mainAdapter = ConcatAdapter(infoHeaderAdapter, chapterHeaderAdapter, chapterAdapter)
         binding.infoScroll.adapter = mainAdapter
 
-        infoViewModel.initializeInfo(infoArgs.name, infoArgs.internalName)
+        if (infoViewModel.webtoonInfo.value!!.status != Resource.Status.SUCCESS) {
+            infoViewModel.initializeInfo(infoArgs.name, infoArgs.internalName)
+        }
 
         // Observing changes to read chapters, so we can refresh all chapters
         infoViewModel.readChapters.observe(viewLifecycleOwner) {

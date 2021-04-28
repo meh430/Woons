@@ -37,7 +37,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragNavHost)
         binding.bottomNavView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.browseFragment || destination.id == R.id.infoFragment) {
+            if (destination.id == R.id.browseFragment ||
+                destination.id == R.id.infoFragment ||
+                destination.id == R.id.readerFragment
+            ) {
                 binding.bottomNavView.visibility = View.GONE
             } else {
                 binding.bottomNavView.visibility = View.VISIBLE
