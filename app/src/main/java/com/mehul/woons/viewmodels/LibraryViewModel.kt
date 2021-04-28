@@ -32,7 +32,6 @@ class LibraryViewModel(application: Application) : AndroidViewModel(application)
     private fun populateTable() {
         viewModelScope.launch {
             libraryRepository.deleteAllWebtoons()
-            return@launch
             val test = listOf(
                 Webtoon(
                     name = "The God of High School",

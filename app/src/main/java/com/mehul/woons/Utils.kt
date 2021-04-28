@@ -11,7 +11,6 @@ import com.mehul.woons.entities.Chapter
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.repositories.LibraryRepository
-import com.mehul.woons.repositories.ReadChaptersRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -80,7 +79,7 @@ suspend fun addOrRemoveFromLibrary(
 }
 
 suspend fun getUpdatedAllChapters(
-    chRep: ReadChaptersRepository,
+    chRep: LibraryRepository,
     inLibrary: Boolean,
     webtoonId: Long,
     ac: List<Chapter>
@@ -92,20 +91,22 @@ suspend fun getUpdatedAllChapters(
             ArrayList()
         }
 
+        //Timber.e(readChs.toString())
         // Create map with name as key and chapter as value
         val readNamesMap =
-            readChs.map { it.internalChapterReference to it }.toMap()
+            readChs.map { it.chapterNumber to it }.toMap()
         val currAllChapters = ac.map { it.copy() }
         // Update whether has read and add ids to available ones
         for (ch in currAllChapters) {
-            val hasRead = readNamesMap.containsKey(ch.internalChapterReference)
+            val hasRead = readNamesMap.containsKey(ch.chapterNumber)
             ch.hasRead = hasRead
             // If in map (read chapter), then update id for future reference (deletions)
             ch.id = if (hasRead) {
-                readNamesMap[ch.internalChapterReference]!!.id
+                readNamesMap[ch.chapterNumber]!!.id
             } else {
                 0
             }
         }
+        //Timber.e(currAllChapters.toString())
         currAllChapters
     }

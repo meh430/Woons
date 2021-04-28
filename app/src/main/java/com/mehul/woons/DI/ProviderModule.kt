@@ -6,7 +6,6 @@ import com.mehul.woons.Constants
 import com.mehul.woons.local.DiscoverCacheConverter
 import com.mehul.woons.local.DiscoverCacheDatabase
 import com.mehul.woons.local.LibraryDatabase
-import com.mehul.woons.local.ReadChaptersDatabase
 import com.mehul.woons.remote.WebtoonApi
 import dagger.Module
 import dagger.Provides
@@ -33,12 +32,8 @@ class ProviderModule {
 
     @Singleton
     @Provides
-    fun provideLibraryDatabase(application: Application) = LibraryDatabase.getDatabase(application)
-
-    @Singleton
-    @Provides
     fun provideReadChaptersDatabase(application: Application) =
-        ReadChaptersDatabase.getDatabase(application)
+        LibraryDatabase.getDatabase(application)
 
     @Singleton
     @Provides
@@ -48,14 +43,11 @@ class ProviderModule {
     ) =
         DiscoverCacheDatabase.getDatabase(application, discoverCacheConverter)
 
-    @Singleton
-    @Provides
-    fun provideLibraryDao(libraryDatabase: LibraryDatabase) = libraryDatabase.libraryDao()
 
     @Singleton
     @Provides
-    fun provideReadChaptersDao(readChaptersDatabase: ReadChaptersDatabase) =
-        readChaptersDatabase.readChaptersDao()
+    fun provideReadChaptersDao(libraryDatabase: LibraryDatabase) =
+        libraryDatabase.readChaptersDao()
 
     @Singleton
     @Provides

@@ -4,12 +4,13 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.mehul.woons.entities.Chapter
 import com.mehul.woons.entities.Webtoon
 
-@Database(entities = [Webtoon::class], version = 2, exportSchema = false)
+@Database(entities = [Chapter::class, Webtoon::class], version = 3, exportSchema = false)
 abstract class LibraryDatabase : RoomDatabase() {
 
-    abstract fun libraryDao(): LibraryDao
+    abstract fun readChaptersDao(): LibraryDao
 
     companion object {
         @Volatile
@@ -23,7 +24,7 @@ abstract class LibraryDatabase : RoomDatabase() {
             }
 
         private fun buildDatabase(appContext: Application) =
-            Room.databaseBuilder(appContext, LibraryDatabase::class.java, "library")
+            Room.databaseBuilder(appContext, LibraryDatabase::class.java, "chapters")
                 .fallbackToDestructiveMigration()
                 .build()
     }

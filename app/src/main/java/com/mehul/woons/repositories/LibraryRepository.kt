@@ -1,6 +1,7 @@
 package com.mehul.woons.repositories
 
 import androidx.lifecycle.LiveData
+import com.mehul.woons.entities.Chapter
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.local.LibraryDao
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +39,31 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
 
     suspend fun deleteAllWebtoons() = withContext(Dispatchers.IO) {
         libraryDao.deleteAllWebtoons()
+    }
+
+    suspend fun getReadChapters(webtoonId: Long): LiveData<List<Chapter>> =
+        withContext(Dispatchers.IO) {
+            libraryDao.getReadChapters(webtoonId)
+        }
+
+    suspend fun getNonLiveReadChapters(webtoonId: Long) = withContext(Dispatchers.IO) {
+        libraryDao.getNonLiveReadChapters(webtoonId)
+    }
+
+    suspend fun deleteReadChapter(id: Long) = withContext(Dispatchers.IO) {
+        libraryDao.deleteReadChapter(id)
+    }
+
+    suspend fun deleteManyReadChapters(chapterIds: List<Long>) = withContext(Dispatchers.IO) {
+        libraryDao.deleteManyReadChapters(chapterIds)
+    }
+
+    suspend fun insertReadChapter(chapter: Chapter) = withContext(Dispatchers.IO) {
+        libraryDao.insertReadChapter(chapter)
+    }
+
+    suspend fun insertAllReadChapters(chapters: List<Chapter>) = withContext(Dispatchers.IO) {
+        libraryDao.insertManyReadChapters(chapters)
     }
 
     companion object {

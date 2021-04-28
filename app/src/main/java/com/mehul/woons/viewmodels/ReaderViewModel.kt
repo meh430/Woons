@@ -8,7 +8,6 @@ import com.mehul.woons.entities.Chapter
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.getUpdatedAllChapters
 import com.mehul.woons.repositories.LibraryRepository
-import com.mehul.woons.repositories.ReadChaptersRepository
 import com.mehul.woons.repositories.WebtoonApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,9 +17,6 @@ import javax.inject.Inject
 class ReaderViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var webtoonApiRepository: WebtoonApiRepository
-
-    @Inject
-    lateinit var chaptersRepository: ReadChaptersRepository
 
     @Inject
     lateinit var libraryRepository: LibraryRepository
@@ -68,7 +64,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
 
                 // update all the chapters with info on whether it has been read or not
                 webtoonChapters =
-                    getUpdatedAllChapters(chaptersRepository, inLibrary, webtoonId, it.chapters)
+                    getUpdatedAllChapters(libraryRepository, inLibrary, webtoonId, it.chapters)
 
                 // now get the chapter pages
                 loadChapterPages(internalName, internalChapterReference)
@@ -99,7 +95,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
             // Only update if in library and hasnt been read before
             if (inLibrary && !webtoonChapters[currentChapterIndex].hasRead) {
                 webtoonChapters[currentChapterIndex].hasRead = true
-                chaptersRepository.insertReadChapter(
+                libraryRepository.insertReadChapter(
                     Chapter(
                         webtoonId = webtoonId,
                         chapterNumber = webtoonChapters[currentChapterIndex].chapterNumber,

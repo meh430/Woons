@@ -20,6 +20,7 @@ import com.mehul.woons.entities.Resource
 import com.mehul.woons.repositories.LibraryRepository
 import com.mehul.woons.viewmodels.WebtoonInfoViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
@@ -44,7 +45,6 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
         (activity as MainActivity).supportActionBar?.title = infoArgs.name
         (activity as MainActivity).binding.appbar.setExpanded(true, true)
         val onLibraryClick = {
-
             if (infoViewModel.inLibrary) {
                 infoViewModel.removeFromLibrary()
             } else {
@@ -73,7 +73,12 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
         }
 
         // Observing changes to read chapters, so we can refresh all chapters
-        infoViewModel.readChapters.observe(viewLifecycleOwner) {
+        infoViewModel.changedRead.observe(viewLifecycleOwner) {
+            Timber.e("CHANGED READ")
+            if (infoViewModel.webtoonInfo.value!!.status != Resource.Status.SUCCESS) {
+                return@observe
+            }
+            chapterAdapter.updateChapterItems(ArrayList())
             infoViewModel.updateAllChapters()
         }
         infoViewModel.allChapters.observe(viewLifecycleOwner) {
@@ -95,18 +100,23 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
     }
 
     override fun onChapterClick(chapter: Chapter) {
-        TODO("Not yet implemented")
+        val toReader = InfoFragmentDirections.actionInfoFragmentToReaderFragment(
+            infoArgs.internalName,
+            chapter.internalChapterReference
+        )
+        findNavController().navigate(toReader)
     }
 
-    override fun markSingle(position: Int) {
-        TODO("Not yet implemented")
+    override fun markSingle(chapter: Chapter, position: Int) {
+        Timber.e(chapter.toString())
+        if (chapter.hasRead) {
+            infoViewModel.markSingleUnread(position)
+        } else {
+            infoViewModel.markSingleRead(position)
+        }
     }
 
-    override fun markManyRead(position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun markManyRead(position: Int) = infoViewModel.markManyRead(position)
 
-    override fun markManyUnread(position: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun markManyUnread(position: Int) = infoViewModel.markManyUnread(position)
 }

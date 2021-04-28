@@ -8,12 +8,13 @@ import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.entities.WebtoonChapters
 import com.mehul.woons.getUpdatedAllChapters
+import com.mehul.woons.notifyObserver
 import com.mehul.woons.repositories.LibraryRepository
-import com.mehul.woons.repositories.ReadChaptersRepository
 import com.mehul.woons.repositories.WebtoonApiRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class WebtoonInfoViewModel(application: Application) : AndroidViewModel(application) {
@@ -21,8 +22,6 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
     @Inject
     lateinit var libraryRepository: LibraryRepository
 
-    @Inject
-    lateinit var chaptersRepository: ReadChaptersRepository
 
     @Inject
     lateinit var webtoonApiRepository: WebtoonApiRepository
@@ -34,22 +33,25 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
     // Data from api
     var webtoonInfo = MutableLiveData<Resource<WebtoonChapters>>()
 
+    val changedRead = MutableLiveData<Boolean>()
+
     // Chapters read gotten from room
     // Listen for change to update all chapters
-    val readChapters = Transformations.switchMap(webtoonIdLive) {
+    /*val readChapters = Transformations.switchMap(webtoonIdLive) {
         liveData<List<Chapter>> {
             if (it != LibraryRepository.NOT_IN_LIBRARY) {
-                chaptersRepository.getReadChapters(it)
+                libraryRepository.getReadChapters(it)
             } else {
                 ArrayList<Chapter>()
             }
         }
-    }
+    }*/
 
     // modified data from api
     var allChapters = MutableLiveData<Resource<List<Chapter>>>()
 
     init {
+        changedRead.value = true
         webtoonIdLive.value = LibraryRepository.NOT_IN_LIBRARY
         startLoading()
         (application as WoonsApplication).appComponent.injectIntoInfo(this)
@@ -75,6 +77,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
                 inLibrary = false
             }
 
+
             // Get the webtoon info
             val infoResult =
                 kotlin.runCatching { webtoonApiRepository.getWebtoonInfo(internalName) }
@@ -96,7 +99,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
 
             // get all chapters
             val allChaptersResult: List<Chapter> = getUpdatedAllChapters(
-                chaptersRepository,
+                libraryRepository,
                 inLibrary,
                 webtoonIdLive.value!!,
                 webtoonInfo.value!!.data!!.chapters
@@ -111,7 +114,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             allChapters.value = Resource.loading()
             val allChaptersResult: List<Chapter> = getUpdatedAllChapters(
-                chaptersRepository,
+                libraryRepository,
                 inLibrary,
                 webtoonIdLive.value!!,
                 webtoonInfo.value!!.data!!.chapters
@@ -122,7 +125,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
 
     // all funcs below require webtoon info to be loaded
     fun addToLibrary() {
-        if (!inLibrary) {
+        if (inLibrary) {
             return
         }
 
@@ -138,6 +141,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
 
             inLibrary = true
             webtoonIdLive.value = insertId
+            changedRead.notifyObserver()
         }
     }
 
@@ -149,26 +153,32 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
             libraryRepository.deleteWebtoon(webtoonIdLive.value!!)
             webtoonIdLive.value = LibraryRepository.NOT_IN_LIBRARY
             inLibrary = false
+            changedRead.notifyObserver()
         }
     }
 
     fun markSingleRead(position: Int) {
+
         if (!inLibrary) {
             return
         }
 
         viewModelScope.launch {
             val markedCh = allChapters.value!!.data!![position].copy()
+
             if (!markedCh.hasRead) {
                 //markedCh.id = 0
                 //markedCh.webtoonId = webtoonIdLive.value!!
-                chaptersRepository.insertReadChapter(
+                Timber.e("F")
+
+                libraryRepository.insertReadChapter(
                     Chapter(
                         webtoonId = webtoonIdLive.value!!,
                         chapterNumber = markedCh.chapterNumber,
                         uploadDate = markedCh.uploadDate
                     )
                 )
+                changedRead.notifyObserver()
             }
         }
     }
@@ -196,7 +206,8 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
                         uploadDate = it.uploadDate
                     )
                 }
-            chaptersRepository.insertAllReadChapters(markedChapters)
+            libraryRepository.insertAllReadChapters(markedChapters)
+            changedRead.notifyObserver()
         }
     }
 
@@ -208,7 +219,8 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             val markedCh = allChapters.value!!.data!![position]
             if (markedCh.hasRead) {
-                chaptersRepository.deleteReadChapter(markedCh.id)
+                libraryRepository.deleteReadChapter(markedCh.id)
+                changedRead.notifyObserver()
             }
         }
     }
@@ -224,7 +236,8 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
                 allChapters.value!!.data!!.slice(cutOff until allChaptersLength).filter {
                     it.hasRead
                 }.map { it.id }
-            chaptersRepository.deleteManyReadChapters(markedChapters)
+            libraryRepository.deleteManyReadChapters(markedChapters)
+            changedRead.notifyObserver()
         }
     }
 
@@ -232,7 +245,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
     // get the first chapter that has not been read yet
     suspend fun getResumeChapter(): Chapter? = withContext(Dispatchers.Default) {
         /*val chapters = getUpdatedAllChapters(
-            chaptersRepository,
+            libraryRepository,
             inLibrary,
             webtoonIdLive.value!!,
             webtoonInfo.value!!.data!!.chapters

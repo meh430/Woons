@@ -102,7 +102,7 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
 
     interface ChapterItemListener {
         fun onChapterClick(chapter: Chapter)
-        fun markSingle(position: Int)
+        fun markSingle(chapter: Chapter, position: Int)
         fun markManyRead(position: Int)
         fun markManyUnread(position: Int)
     }
@@ -113,13 +113,16 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
         sheet.setContentView(binding.root)
         binding.markSingle.text = if (chapter.hasRead) "Mark as unread" else "Mark as read"
         binding.markSingle.setOnClickListener {
-            listener.markSingle(position)
+            listener.markSingle(chapter, position)
+            sheet.dismiss()
         }
         binding.markManyRead.setOnClickListener {
             listener.markManyRead(position)
+            sheet.dismiss()
         }
         binding.markManyUnread.setOnClickListener {
             listener.markManyUnread(position)
+            sheet.dismiss()
         }
         sheet.show()
     }
