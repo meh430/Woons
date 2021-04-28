@@ -38,7 +38,14 @@ class DiscoverFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val onWebtoonClick = { webtoon: Webtoon -> Timber.e(webtoon.toString()) }
+        val onWebtoonClick = { webtoon: Webtoon ->
+            Timber.e(webtoon.toString())
+            val toInfo = DiscoverFragmentDirections.actionDiscoverFragmentToInfoFragment(
+                webtoon.name,
+                webtoon.internalName
+            )
+            findNavController().navigate(toInfo)
+        }
         val onWebtoonLongClick: (Webtoon) -> Unit = {
             // long click so change library
             lifecycleScope.launch {

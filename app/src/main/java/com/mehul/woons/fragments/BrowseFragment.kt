@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -48,6 +49,11 @@ class BrowseFragment : Fragment() {
 
         val onWebtoonClick = { webtoon: Webtoon ->
             Timber.e(webtoon.toString())
+            val toInfo = BrowseFragmentDirections.actionBrowseFragmentToInfoFragment(
+                webtoon.name,
+                webtoon.internalName
+            )
+            findNavController().navigate(toInfo)
         }
         val browseAdapter = WebtoonAdapter(true, onWebtoonClick) {
             // long click so change library
