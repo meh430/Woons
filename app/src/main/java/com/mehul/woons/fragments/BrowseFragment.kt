@@ -48,7 +48,6 @@ class BrowseFragment : Fragment() {
         val onWebtoonClick = { webtoon: Webtoon ->
             Timber.e(webtoon.toString())
         }
-        // Do all observe stuff here
         val browseAdapter = WebtoonAdapter(true, onWebtoonClick) {
             // long click so change library
             lifecycleScope.launch {

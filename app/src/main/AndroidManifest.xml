@@ -14,12 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Woons"
         android:usesCleartextTraffic="true">
-
-
+        <activity android:name=".ReaderActivity"></activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Woons.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

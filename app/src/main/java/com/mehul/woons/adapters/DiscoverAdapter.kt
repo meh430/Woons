@@ -8,6 +8,14 @@ import com.mehul.woons.databinding.DiscoverItemBinding
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.entities.WebtoonsPage
 
+/*
+ binding.category.setTextColor(
+                ContextCompat.getColor(
+                    binding.category.context,
+                    R.color.coloOnS
+                )
+            )
+ */
 // onWebtoonClick will be used to navigate to info fragment
 // onDiscoverClick will be used to navigate to the browse fragment
 class DiscoverAdapter(
@@ -43,6 +51,7 @@ class DiscoverAdapter(
             binding.categoryTitleBar.setOnClickListener {
                 onDiscoverClick(discoverItem.category)
             }
+
             binding.category.text = Constants.getDisplayCategory(discoverItem.category)
             val webtoonAdapter = WebtoonAdapter(false, onWebtoonClick, onWebtoonLongClick)
             binding.categoryItems.adapter = webtoonAdapter

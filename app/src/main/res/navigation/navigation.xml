@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.mehul.woons.fragments.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="Settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/infoFragment"

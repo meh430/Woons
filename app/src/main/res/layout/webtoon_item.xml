@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="6dp">
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,11 +30,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="4dp"
             android:text="Webtoon Title"
-            android:textColor="?attr/colorOnBackground"
-            app:autoSizeMaxTextSize="100sp"
-            app:autoSizeMinTextSize="12sp"
-            app:autoSizeStepGranularity="2sp"
-            app:autoSizeTextType="uniform" />
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="?attr/colorOnBackground" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

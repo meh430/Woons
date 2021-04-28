@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/infoHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp">
+
+    <include
+        android:id="@+id/error"
+        layout="@layout/error"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/infoHeaderLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="30dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/infoHeaderContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/infoHeaderTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/coverImageContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/card_stroke"
+                app:strokeWidth="1dp">
+
+                <ImageView
+                    android:id="@+id/coverImage"
+                    android:layout_width="100dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/rounded_image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sc" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:id="@+id/infoText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/webtoonTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kind of long Webtoon Title that is really long"
+                    android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Author Name" />
+
+                <TextView
+                    android:id="@+id/artist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Artist Name" />
+
+                <TextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rating" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/infoHeaderBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/infoHeaderTop"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <Button
+                android:id="@+id/libraryButton"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:text="Add to library"
+                app:icon="@drawable/ic_add_library" />
+
+            <Button
+                android:id="@+id/resumeButton"
+                style="@style/Widget.MaterialComponents.Button.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:text="Resume reading"
+                app:icon="@drawable/ic_read" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sagittis tortor felis, nec sagittis nisl venenatis eu. Quisque ultrices convallis velit, eget laoreet metus viverra ac. Phasellus sapien ipsum, venenatis dignissim mattis eu, volutpat a neque. Quisque tincidunt condimentum massa, et fringilla enim luctus a. Quisque at sem interdum, ornare leo a, ultricies mi. Suspendisse tincidunt imperdiet est, non commodo sapien elementum ut. Etiam consectetur suscipit orci, ut pharetra sapien finibus et. Suspendisse ut tincidunt justo. Cras pellentesque nulla vitae risus convallis, at viverra libero viverra. Donec sit amet lacus at lacus molestie gravida non sed diam. Nulla ultricies auctor mauris in blandit. Nullam consequat vulputate maximus. Mauris sed diam et purus dignissim rutrum ut sit amet purus. Aenean tempus vestibulum lacus, et vulputate tellus facilisis sit amet." />
+        </LinearLayout>
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

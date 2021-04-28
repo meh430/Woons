@@ -2,4 +2,5 @@
 <resources>
     <color name="appBarColor">?attr/colorSurface</color>
     <color name="searchColor">@color/white</color>
+    <color name="textColor">@color/white</color>
 </resources>

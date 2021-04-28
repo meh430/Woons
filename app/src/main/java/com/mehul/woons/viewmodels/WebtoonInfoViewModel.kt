@@ -15,13 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class WebtoonInfoViewModel(
-    application: Application,
-    val name: String, // actual name
-    val internalName: String, // api name
-    val webtoonId: Long // room id
-) :
-    AndroidViewModel(application) {
+class WebtoonInfoViewModel(application: Application) : AndroidViewModel(application) {
     // Injected data sources
     @Inject
     lateinit var libraryRepository: LibraryRepository
@@ -34,12 +28,13 @@ class WebtoonInfoViewModel(
 
     // to track removals and additions to library
     var webtoonIdLive = MutableLiveData<Long>()
-    var inLibrary = webtoonId != LibraryRepository.NOT_IN_LIBRARY
+    var inLibrary = false
 
     // Data from api
     var webtoonInfo = MutableLiveData<Resource<WebtoonChapters>>()
 
     // Chapters read gotten from room
+    // Listen for change to update all chapters
     val readChapters = Transformations.switchMap(webtoonIdLive) {
         liveData<List<Chapter>> {
             if (it != LibraryRepository.NOT_IN_LIBRARY) {
@@ -54,8 +49,7 @@ class WebtoonInfoViewModel(
     var allChapters = MutableLiveData<Resource<List<Chapter>>>()
 
     init {
-        webtoonIdLive.value = webtoonId
-        inLibrary = webtoonId != LibraryRepository.NOT_IN_LIBRARY
+        webtoonIdLive.value = LibraryRepository.NOT_IN_LIBRARY
         startLoading()
         (application as WoonsApplication).appComponent.injectIntoInfo(this)
     }
@@ -65,9 +59,21 @@ class WebtoonInfoViewModel(
         allChapters.value = Resource.loading()
     }
 
-    fun initializeData() {
+    // call first in fragment
+    fun initializeData(
+        name: String, // actual name
+        internalName: String // api name
+    ) {
         viewModelScope.launch {
             startLoading()
+            // check whether webtoon is in library, and update id if there
+            if (libraryRepository.webtoonWithNameExists(name)) {
+                webtoonIdLive.value = libraryRepository.getWebtoonIdFromName(name)
+                inLibrary = true
+            } else {
+                inLibrary = false
+            }
+
             // Get the webtoon info
             val infoResult =
                 kotlin.runCatching { webtoonApiRepository.getWebtoonInfo(internalName) }
@@ -101,6 +107,7 @@ class WebtoonInfoViewModel(
             ArrayList()
         }
 
+        // Create map with name as key and chapter as value
         val readNamesMap =
             readChs.map { it.internalChapterReference to it }.toMap()
         val currAllChapters = webtoonInfo.value!!.data!!.chapters
@@ -108,7 +115,12 @@ class WebtoonInfoViewModel(
         for (ch in currAllChapters) {
             val hasRead = readNamesMap.containsKey(ch.internalChapterReference)
             ch.hasRead = hasRead
-            ch.id = readNamesMap[ch.internalChapterReference]?.id ?: 0
+            // If in map (read chapter), then update id for future reference (deletions)
+            ch.id = if (hasRead) {
+                readNamesMap[ch.internalChapterReference]!!.id
+            } else {
+                0
+            }
         }
         currAllChapters
     }
@@ -124,6 +136,10 @@ class WebtoonInfoViewModel(
 
     // all funcs below require webtoon info to be loaded
     fun addToLibrary() {
+        if (!inLibrary) {
+            return
+        }
+
         viewModelScope.launch {
             val currWebtoon = webtoonInfo.value!!.data!!.webtoon
             val insertId = libraryRepository.insertWebtoon(
@@ -170,7 +186,7 @@ class WebtoonInfoViewModel(
         if (!inLibrary) {
             return
         }
-        // Make list slice [cutOff, len]
+        // Make list slice [cutOff, len)
         // filter out all the read chapters, only marking unread chapters
         // create list of copies
         viewModelScope.launch {
