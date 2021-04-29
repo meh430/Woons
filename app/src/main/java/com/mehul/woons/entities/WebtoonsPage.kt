@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 // This will be the result when searching or browsing a category
-// Also will be cached for discover
 @Entity(tableName = "DiscoverCache")
 data class WebtoonsPage(
     @PrimaryKey(autoGenerate = true) var id: Long = 0,

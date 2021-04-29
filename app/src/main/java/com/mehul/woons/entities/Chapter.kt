@@ -2,8 +2,6 @@ package com.mehul.woons.entities
 
 import androidx.room.*
 
-// Only really need to get read chapters in infoVm.
-// Update hasRead in infovm after getting read chapters from local and all chapters from network
 @Entity(
     tableName = "ReadChapters",
     foreignKeys = [ForeignKey(

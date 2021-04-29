@@ -4,11 +4,6 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 
-// All the ignored fields are pulled in with an api call
-// Should update all the fields on startup in vm
-// Update reading counts in repo with dao sql query!
-// In libraryvm, list of webtoons with transform for numRead and numChapters checks
-// keep count in infovm? update using dao, no need to pull whole object
 @Entity(tableName = "Library")
 data class Webtoon(
     @PrimaryKey(autoGenerate = true) var id: Long = 0L,
