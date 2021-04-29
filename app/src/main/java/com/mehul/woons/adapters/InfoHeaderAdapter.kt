@@ -11,7 +11,7 @@ import com.mehul.woons.entities.WebtoonChapters
 
 class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () -> Unit) :
     RecyclerView.Adapter<InfoHeaderAdapter.InfoViewHolder>() {
-    var webtoonInfo: Resource<WebtoonChapters> = Resource.loading()
+    private var webtoonInfo: Resource<WebtoonChapters> = Resource.loading()
     var inLibrary = false
 
     fun updateInfo(info: Resource<WebtoonChapters>) {
@@ -36,14 +36,12 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) = holder.bind(webtoonInfo)
 
-
     override fun getItemCount(): Int = 1
-
 
     inner class InfoViewHolder(val binding: InfoHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun setNotEmpty(original: String, replace: String) = if (original.isEmpty()) {
+        private fun setNotEmpty(original: String, replace: String) = if (original.isEmpty()) {
             "No $replace found!"
         } else {
             original
@@ -100,7 +98,7 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
             }
         }
 
-        fun hideAll() {
+        private fun hideAll() {
             binding.error.error.visibility = View.GONE
             binding.infoHeaderLoading.visibility = View.GONE
             binding.infoHeaderContent.visibility = View.GONE
