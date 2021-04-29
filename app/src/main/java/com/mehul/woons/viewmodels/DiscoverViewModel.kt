@@ -63,6 +63,7 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
 
     suspend fun getCacheAge(): Double {
         val timeStamp = discoverCacheRepository.getNonLiveDiscoverCache()[0].createdAt
+        Timber.e((((Date().time - timeStamp).toDouble()) / (1000 * 60 * 60)).toString())
         return ((Date().time - timeStamp).toDouble()) / (1000 * 60 * 60)
     }
 

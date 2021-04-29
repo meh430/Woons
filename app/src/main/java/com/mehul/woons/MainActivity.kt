@@ -26,12 +26,11 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragNavHost)
         binding.bottomNavView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            supportActionBar?.subtitle = ""
-
             if (destination.id == R.id.browseFragment ||
                 destination.id == R.id.infoFragment ||
                 destination.id == R.id.readerFragment
             ) {
+                binding.toolbar.toolbar.title = "Loading"
                 binding.bottomNavView.visibility = View.GONE
             } else {
                 binding.bottomNavView.visibility = View.VISIBLE
@@ -47,13 +46,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.settingsFragment -> {
                     binding.toolbar.toolbar.title = "Settings"
                 }
-                R.id.readerFragment -> {
-                    //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                    //window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                    //supportActionBar?.hide()
-                    val attrib = window.attributes
 
-                }
             }
         }
 

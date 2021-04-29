@@ -6,9 +6,11 @@
     android:orientation="vertical"
     tools:context=".fragments.SettingsFragment">
 
-    <include layout="@layout/info_header" />
-
-    <include layout="@layout/chapter_item" />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Work in progress" />
 
 </LinearLayout>

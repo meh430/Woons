@@ -18,7 +18,6 @@ import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.viewmodels.LibraryViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 class LibraryFragment : Fragment() {
@@ -49,7 +48,6 @@ class LibraryFragment : Fragment() {
                         binding.empty.emptyLabel.text = "Library is empty :("
                         binding.empty.empty.visibility = View.VISIBLE
                     } else {
-                        Timber.e(it.data.toString())
                         binding.webtoonScroll.visibility = View.VISIBLE
 
                     }
@@ -67,7 +65,6 @@ class LibraryFragment : Fragment() {
 
     private fun initializeAdapter() {
         val onWebtoonClick = { webtoon: Webtoon ->
-            Timber.e(webtoon.toString())
             val toInfo = LibraryFragmentDirections.actionLibraryFragmentToInfoFragment(
                 webtoon.name,
                 webtoon.internalName

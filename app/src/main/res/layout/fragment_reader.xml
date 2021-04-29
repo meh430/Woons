@@ -27,6 +27,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <androidx.cardview.widget.CardView
+        android:alpha="0.7"
         android:id="@+id/readerBottom"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -44,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_prev"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -58,14 +60,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
+                    android:id="@+id/chapterName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center"
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:padding="4dp"
-                    android:text="Chapter Number"
+                    android:text="Loading..."
                     android:textAppearance="?attr/textAppearanceListItem" />
             </LinearLayout>
 
@@ -76,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_next"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

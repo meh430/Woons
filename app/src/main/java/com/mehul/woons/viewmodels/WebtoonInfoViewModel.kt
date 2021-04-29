@@ -253,7 +253,7 @@ class WebtoonInfoViewModel(application: Application) : AndroidViewModel(applicat
         val chapters = allChapters.value!!.data!!
 
         // gets first index of chapter that has not been read yet
-        val resumeIndex = chapters.indexOfFirst { !it.hasRead }
+        val resumeIndex = chapters.indexOfLast { !it.hasRead }
         if (resumeIndex != -1) chapters[resumeIndex] else null
     }
 

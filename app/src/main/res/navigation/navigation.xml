@@ -68,7 +68,7 @@
     <fragment
         android:id="@+id/readerFragment"
         android:name="com.mehul.woons.fragments.ReaderFragment"
-        android:label="fragment_reader"
+        android:label="Reader"
         tools:layout="@layout/fragment_reader">
         <argument
             android:name="internalName"
