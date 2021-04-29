@@ -76,5 +76,8 @@
         <argument
             android:name="internalChapterReference"
             app:argType="string" />
+        <argument
+            android:name="name"
+            app:argType="string" />
     </fragment>
 </navigation>

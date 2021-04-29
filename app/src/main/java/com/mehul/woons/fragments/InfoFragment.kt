@@ -55,7 +55,8 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
                 val toReader = InfoFragmentDirections.actionInfoFragmentToReaderFragment(
                     infoArgs.internalName,
                     resumeCh?.internalChapterReference
-                        ?: infoViewModel.getLastChapter().internalChapterReference
+                        ?: infoViewModel.getLastChapter().internalChapterReference,
+                    infoArgs.name
                 )
                 findNavController().navigate(toReader)
             }
@@ -104,7 +105,8 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
     override fun onChapterClick(chapter: Chapter) {
         val toReader = InfoFragmentDirections.actionInfoFragmentToReaderFragment(
             infoArgs.internalName,
-            chapter.internalChapterReference
+            chapter.internalChapterReference,
+            infoArgs.name
         )
         findNavController().navigate(toReader)
     }

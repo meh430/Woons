@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mehul.woons.WoonsApplication
 import com.mehul.woons.entities.Chapter
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.getUpdatedAllChapters
@@ -34,6 +35,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
     val chapterPages: MutableLiveData<Resource<List<String>>> = MutableLiveData()
 
     init {
+        (application as WoonsApplication).appComponent.injectIntoReader(this)
         chapterPages.value = Resource.loading()
     }
 

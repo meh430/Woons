@@ -1,10 +1,7 @@
 package com.mehul.woons.DI
 
 import android.app.Application
-import com.mehul.woons.viewmodels.BrowseViewModel
-import com.mehul.woons.viewmodels.DiscoverViewModel
-import com.mehul.woons.viewmodels.LibraryViewModel
-import com.mehul.woons.viewmodels.WebtoonInfoViewModel
+import com.mehul.woons.viewmodels.*
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -18,6 +15,7 @@ interface AppComponent {
     fun injectIntoInfo(webtoonInfoViewModel: WebtoonInfoViewModel)
     fun injectIntoDiscover(discoverViewModel: DiscoverViewModel)
     fun injectIntoBrowse(browseViewModel: BrowseViewModel)
+    fun injectIntoReader(readerViewModel: ReaderViewModel)
 
     @Component.Builder
     interface Builder {
