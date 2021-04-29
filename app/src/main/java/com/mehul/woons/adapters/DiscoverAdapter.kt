@@ -18,18 +18,20 @@ class DiscoverAdapter(
 ) :
     RecyclerView.Adapter<DiscoverAdapter.DiscoverViewHolder>() {
 
-    var discoverItems: List<WebtoonsPage> = ArrayList()
+    private var discoverItems: List<WebtoonsPage> = ArrayList()
 
     fun updateDiscoverItems(l: List<WebtoonsPage>) {
         discoverItems = l
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscoverViewHolder {
-        val binding =
-            DiscoverItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DiscoverViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = DiscoverViewHolder(
+        DiscoverItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+    )
 
     override fun onBindViewHolder(holder: DiscoverViewHolder, position: Int) =
         holder.bind(discoverItems[position])
@@ -49,7 +51,6 @@ class DiscoverAdapter(
             val webtoonAdapter = WebtoonAdapter(false, onWebtoonClick, onWebtoonLongClick)
             binding.categoryItems.adapter = webtoonAdapter
             webtoonAdapter.updateWebtoons(discoverItem.items)
-
         }
     }
 }
