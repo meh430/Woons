@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.fragNavHost)
         binding.bottomNavView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            supportActionBar?.subtitle = ""
+
             if (destination.id == R.id.browseFragment ||
                 destination.id == R.id.infoFragment ||
                 destination.id == R.id.readerFragment
@@ -71,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.fragNavHost)
+        supportActionBar?.subtitle = ""
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

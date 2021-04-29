@@ -96,7 +96,7 @@ class BrowseFragment : Fragment() {
         }
 
         browseViewModel.currentPage.observe(viewLifecycleOwner) {
-            (activity as MainActivity).binding.appbar.setExpanded(true, true)
+            //(activity as MainActivity).binding.appbar.setExpanded(true, true)
             if (browseArgs.isSearch) {
                 (activity as MainActivity).supportActionBar?.title = "Search"
             } else {
