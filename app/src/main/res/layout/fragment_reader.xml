@@ -23,7 +23,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:translationZ="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <androidx.cardview.widget.CardView

@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
     }
 
-
     private fun setupNavigation() {
         val navController = findNavController(R.id.fragNavHost)
         binding.bottomNavView.setupWithNavController(navController)

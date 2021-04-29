@@ -8,15 +8,8 @@ import com.mehul.woons.databinding.DiscoverItemBinding
 import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.entities.WebtoonsPage
 
-/*
- binding.category.setTextColor(
-                ContextCompat.getColor(
-                    binding.category.context,
-                    R.color.coloOnS
-                )
-            )
- */
 // onWebtoonClick will be used to navigate to info fragment
+// longClick will be used to add or remove from library
 // onDiscoverClick will be used to navigate to the browse fragment
 class DiscoverAdapter(
     val onWebtoonClick: (Webtoon) -> Unit,

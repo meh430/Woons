@@ -2,20 +2,16 @@ package com.mehul.woons.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mehul.woons.R
 import com.mehul.woons.databinding.ChapterItemBinding
-import com.mehul.woons.databinding.ChapterLoadingBinding
 import com.mehul.woons.databinding.ChapterSheetBinding
-import com.mehul.woons.databinding.ErrorBinding
 import com.mehul.woons.entities.Chapter
-import timber.log.Timber
 
-class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
+class ChapterAdapter(val listener: ChapterItemListener) :
     RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder>() {
 
     var chapterItems: List<Chapter> = ArrayList()
@@ -42,9 +38,8 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
         )
     )
 
-    override fun onBindViewHolder(holder: ChapterViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ChapterViewHolder, position: Int) =
         holder.bind(chapterItems[position], position)
-    }
 
 
     override fun getItemCount(): Int = chapterItems.size
@@ -58,18 +53,18 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
 
     fun showSheet(context: Context, chapter: Chapter, position: Int) {
         val sheet = BottomSheetDialog(context)
-        val binding = ChapterSheetBinding.inflate(LayoutInflater.from(context))
-        sheet.setContentView(binding.root)
-        binding.markSingle.text = if (chapter.hasRead) "Mark as unread" else "Mark as read"
-        binding.markSingle.setOnClickListener {
+        val sheetBinding = ChapterSheetBinding.inflate(LayoutInflater.from(context))
+        sheet.setContentView(sheetBinding.root)
+        sheetBinding.markSingle.text = if (chapter.hasRead) "Mark as unread" else "Mark as read"
+        sheetBinding.markSingle.setOnClickListener {
             listener.markSingle(chapter, position)
             sheet.dismiss()
         }
-        binding.markManyRead.setOnClickListener {
+        sheetBinding.markManyRead.setOnClickListener {
             listener.markManyRead(position)
             sheet.dismiss()
         }
-        binding.markManyUnread.setOnClickListener {
+        sheetBinding.markManyUnread.setOnClickListener {
             listener.markManyUnread(position)
             sheet.dismiss()
         }
@@ -99,29 +94,11 @@ class ChapterAdapter(val listener: ChapterAdapter.ChapterItemListener) :
 
             // open up bottom sheet with options on marking chapters as read
             binding.root.setOnLongClickListener {
-                Timber.e("LONG CLICK")
                 if (inLibrary) {
                     showSheet(binding.root.context, chapter, position)
                 }
                 true
             }
         }
-    }
-
-    inner class ChapterLoadingViewHolder(val binding: ChapterLoadingBinding) :
-        RecyclerView.ViewHolder(binding.root)
-
-    inner class ChapterErrorViewHolder(val binding: ErrorBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(message: String) {
-            binding.error.visibility = View.VISIBLE
-            binding.errorLabel.text = message
-        }
-    }
-
-    companion object {
-        const val SUCCESS = 0
-        const val LOADING = 1
-        const val ERROR = 2
     }
 }
