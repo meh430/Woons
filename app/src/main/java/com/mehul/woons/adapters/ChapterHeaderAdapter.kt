@@ -18,12 +18,12 @@ class ChapterHeaderAdapter : RecyclerView.Adapter<ChapterHeaderAdapter.ChapterHe
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ChapterHeaderAdapter.ChapterHeaderViewHolder = ChapterHeaderViewHolder(
+    ): ChapterHeaderViewHolder = ChapterHeaderViewHolder(
         ChaptersHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
     override fun onBindViewHolder(
-        holder: ChapterHeaderAdapter.ChapterHeaderViewHolder,
+        holder: ChapterHeaderViewHolder,
         position: Int
     ) = holder.bind(webtoonInfo)
 

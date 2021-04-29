@@ -15,7 +15,7 @@ import com.mehul.woons.databinding.ReaderItemBinding
 
 
 class ReaderAdapter : RecyclerView.Adapter<ReaderAdapter.ReaderViewHolder>() {
-    var pages: List<String> = ArrayList()
+    private var pages: List<String> = ArrayList()
 
     fun updatePages(p: List<String>) {
         pages = p
@@ -25,7 +25,7 @@ class ReaderAdapter : RecyclerView.Adapter<ReaderAdapter.ReaderViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ReaderAdapter.ReaderViewHolder = ReaderViewHolder(
+    ): ReaderViewHolder = ReaderViewHolder(
         ReaderItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -33,7 +33,7 @@ class ReaderAdapter : RecyclerView.Adapter<ReaderAdapter.ReaderViewHolder>() {
         )
     )
 
-    override fun onBindViewHolder(holder: ReaderAdapter.ReaderViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: ReaderViewHolder, position: Int) =
         holder.bind(pages[position])
 
     override fun getItemCount() = pages.size
@@ -55,8 +55,6 @@ class ReaderAdapter : RecyclerView.Adapter<ReaderAdapter.ReaderViewHolder>() {
 
                     override fun onLoadCleared(placeholder: Drawable?) {}
                 })
-            //Glide.with(binding.readerImage.context).load(pageUrl).fitCenter()
-            //   .into(binding.readerImage)
         }
     }
 }

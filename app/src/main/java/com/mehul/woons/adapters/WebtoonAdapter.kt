@@ -9,7 +9,7 @@ import com.mehul.woons.databinding.WebtoonItemBinding
 import com.mehul.woons.entities.Webtoon
 
 class WebtoonAdapter(
-    val isGrid: Boolean,
+    private val isGrid: Boolean,
     val onClick: (Webtoon) -> Unit,
     val onLongClick: (Webtoon) -> Unit
 ) :
@@ -53,7 +53,6 @@ class WebtoonAdapter(
     }
 
     override fun getItemCount() = webtoons.size
-
 
     inner class WebtoonGridViewHolder(private val binding: WebtoonItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

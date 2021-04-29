@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Component(modules = [LocalModule::class, NetworkModule::class])
 interface AppComponent {
     // field injectors
-    fun injectIntoLibrary(libraryViewmodel: LibraryViewModel)
+    fun injectIntoLibrary(libraryViewModel: LibraryViewModel)
     fun injectIntoInfo(webtoonInfoViewModel: WebtoonInfoViewModel)
     fun injectIntoDiscover(discoverViewModel: DiscoverViewModel)
     fun injectIntoBrowse(browseViewModel: BrowseViewModel)

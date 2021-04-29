@@ -30,7 +30,7 @@ class ChapterAdapter(val listener: ChapterItemListener) :
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ChapterAdapter.ChapterViewHolder = ChapterViewHolder(
+    ): ChapterViewHolder = ChapterViewHolder(
         ChapterItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
