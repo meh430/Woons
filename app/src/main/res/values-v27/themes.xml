@@ -1,8 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
-    <style name="Theme.Woons" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 
-    <!-- Primary brand color. -->
+    <style name="Theme.Woons" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:windowLayoutInDisplayCutoutMode">
+            shortEdges
+        </item>
+        <!-- Primary brand color. -->
         <item name="colorPrimary">#7E57C2</item>
         <item name="colorPrimaryVariant">#9575CD</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -16,15 +19,5 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/rubik</item>
-    </style>
-
-    <style name="Theme.Woons.ActionBar">
-        <item name="windowActionBar">true</item>
-        <item name="windowNoTitle">false</item>
-    </style>
-
-    <style name="Theme.Woons.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 </resources>

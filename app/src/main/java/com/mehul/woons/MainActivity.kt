@@ -12,17 +12,6 @@ import com.mehul.woons.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
-    /*val lol = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return WebtoonInfoViewModel(application, "", "", 3) as T
-        }
-    }
-
-    val vm: WebtoonInfoViewModel by viewModels {
-        lol
-    }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -57,6 +46,13 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.settingsFragment -> {
                     binding.toolbar.toolbar.title = "Settings"
+                }
+                R.id.readerFragment -> {
+                    //window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                    //window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    //supportActionBar?.hide()
+                    val attrib = window.attributes
+
                 }
             }
         }

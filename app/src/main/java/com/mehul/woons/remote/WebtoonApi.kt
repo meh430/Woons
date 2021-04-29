@@ -6,7 +6,6 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-// what the fuck is this bullshit o my
 interface WebtoonApi {
     @GET("available-categories")
     suspend fun getAvailableCategories(): List<String>

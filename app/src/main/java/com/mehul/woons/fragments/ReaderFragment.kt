@@ -43,10 +43,9 @@ class ReaderFragment : Fragment() {
         }
 
         readerViewModel.chapterPages.observe(viewLifecycleOwner) {
-            (activity as MainActivity).supportActionBar?.show()
-            (activity as MainActivity).supportActionBar?.title = readerArgs.name
-            (activity as MainActivity).supportActionBar?.subtitle = ""
-
+            //(activity as MainActivity).supportActionBar?.show()
+            //(activity as MainActivity).supportActionBar?.title = readerArgs.name
+            //(activity as MainActivity).supportActionBar?.subtitle = ""
             when (it.status) {
                 Resource.Status.SUCCESS -> {
                     hideAll()

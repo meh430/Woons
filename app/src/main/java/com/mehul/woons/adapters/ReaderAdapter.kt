@@ -50,7 +50,7 @@ class ReaderAdapter : RecyclerView.Adapter<ReaderAdapter.ReaderViewHolder>() {
                         resource: Bitmap,
                         transition: Transition<in Bitmap?>?
                     ) {
-                        binding.readerImage.setImage(ImageSource.bitmap(resource))
+                        binding.readerImage.setImage(ImageSource.cachedBitmap(resource))
                     }
 
                     override fun onLoadCleared(placeholder: Drawable?) {}
