@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 // Component for injecting fields into viewmodels
 @Singleton
-@Component(modules = [ProviderModule::class])
+@Component(modules = [LocalModule::class, NetworkModule::class])
 interface AppComponent {
     // field injectors
     fun injectIntoLibrary(libraryViewmodel: LibraryViewModel)

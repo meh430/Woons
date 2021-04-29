@@ -8,7 +8,7 @@ import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.WebtoonChapters
 
 class ChapterHeaderAdapter : RecyclerView.Adapter<ChapterHeaderAdapter.ChapterHeaderViewHolder>() {
-    var webtoonInfo: Resource<WebtoonChapters> = Resource.loading()
+    private var webtoonInfo: Resource<WebtoonChapters> = Resource.loading()
 
     fun updateInfo(info: Resource<WebtoonChapters>) {
         webtoonInfo = info
@@ -25,9 +25,8 @@ class ChapterHeaderAdapter : RecyclerView.Adapter<ChapterHeaderAdapter.ChapterHe
     override fun onBindViewHolder(
         holder: ChapterHeaderAdapter.ChapterHeaderViewHolder,
         position: Int
-    ) {
-        holder.bind(webtoonInfo)
-    }
+    ) = holder.bind(webtoonInfo)
+
 
     override fun getItemCount(): Int = 1
 

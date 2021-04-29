@@ -14,7 +14,7 @@ import com.mehul.woons.entities.Chapter
 class ChapterAdapter(val listener: ChapterItemListener) :
     RecyclerView.Adapter<ChapterAdapter.ChapterViewHolder>() {
 
-    var chapterItems: List<Chapter> = ArrayList()
+    private var chapterItems: List<Chapter> = ArrayList()
     var inLibrary = false
 
     fun updateChapterItems(items: List<Chapter>) {
