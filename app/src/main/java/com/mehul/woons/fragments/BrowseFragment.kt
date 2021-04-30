@@ -60,7 +60,7 @@ class BrowseFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
             // Ensure that no data has been loaded already
             if (browseViewModel.webtoons.value?.isEmpty() == true) {
                 browseViewModel.performSearch(browseArgs.category)
-                binding.browseSearch.setOnEditorActionListener { textView, i, keyEvent ->
+                binding.browseSearch.setOnEditorActionListener { _, i, _ ->
                     if (i == EditorInfo.IME_ACTION_SEARCH) {
                         // hide kb
                         binding.browseSearch.clearFocus()
@@ -82,7 +82,6 @@ class BrowseFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
         }
 
         browseViewModel.currentPage.observe(viewLifecycleOwner) {
-            //(activity as MainActivity).binding.appbar.setExpanded(true, true)
             if (browseArgs.isSearch) {
                 (activity as MainActivity).supportActionBar?.title = "Search"
             } else {
@@ -116,6 +115,7 @@ class BrowseFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
                 if (browseViewModel.currentPage.value!!.status == Resource.Status.LOADING) {
                     return@observe
                 }
+
                 hideAll()
                 binding.empty.empty.visibility = View.VISIBLE
                 if (browseArgs.isSearch) {
@@ -138,8 +138,9 @@ class BrowseFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
                     if (browseArgs.isSearch) {
                         return
                     }
+
                     val currentStatus = browseViewModel.currentPage.value!!.status
-                    // Only paginate if there were no issues previously?
+                    // Only paginate if there were no issues previously
                     if (currentStatus == Resource.Status.SUCCESS) {
                         browseViewModel.performFetch(browseArgs.category)
                     }
@@ -159,6 +160,8 @@ class BrowseFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
         super.onDestroyView()
         _binding = null
     }
+
+    // webtoon adapter listener overrides
 
     override fun onClick(webtoon: Webtoon) {
         Timber.e(webtoon.toString())

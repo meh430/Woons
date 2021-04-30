@@ -35,7 +35,6 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentInfoBinding.inflate(inflater, container, false)
         return binding.root
     }

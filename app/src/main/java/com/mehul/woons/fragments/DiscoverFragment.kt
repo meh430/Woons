@@ -30,7 +30,6 @@ class DiscoverFragment : Fragment(), DiscoverAdapter.DiscoverListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentDiscoverBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,11 +37,10 @@ class DiscoverFragment : Fragment(), DiscoverAdapter.DiscoverListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Do all observe stuff here
         discoverAdapter = DiscoverAdapter(this)
         binding.discoverScroll.adapter = discoverAdapter
 
-        binding.searchBar.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.searchBar.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 // hide kb
                 binding.searchBar.clearFocus()
@@ -57,9 +55,9 @@ class DiscoverFragment : Fragment(), DiscoverAdapter.DiscoverListener {
 
                 findNavController().navigate(toSearchBrowse)
                 true
+            } else {
+                false
             }
-
-            false
         }
 
 
@@ -92,6 +90,8 @@ class DiscoverFragment : Fragment(), DiscoverAdapter.DiscoverListener {
         super.onDestroyView()
         _binding = null
     }
+
+    // Discover listener overrides
 
     override fun onWebtoonClick(webtoon: Webtoon) {
         Timber.e(webtoon.toString())

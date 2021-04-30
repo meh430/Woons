@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.mehul.woons.databinding.InfoHeaderBinding
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.WebtoonChapters
+import timber.log.Timber
 
 class InfoHeaderAdapter(val listener: InfoHeaderListener) :
     RecyclerView.Adapter<InfoHeaderAdapter.InfoViewHolder>() {
@@ -46,6 +48,16 @@ class InfoHeaderAdapter(val listener: InfoHeaderListener) :
     inner class InfoViewHolder(val binding: InfoHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private fun showSummarySheet(summary: String) {
+            MaterialAlertDialogBuilder(binding.root.context)
+                .setTitle("Summary")
+                .setMessage(summary)
+                .setPositiveButton("Cool") { _, _ ->
+                    Timber.e("Clicked out of summary")
+                }
+                .show()
+        }
+
         private fun setNotEmpty(original: String, replace: String) = if (original.isEmpty()) {
             "No $replace found!"
         } else {
@@ -69,6 +81,15 @@ class InfoHeaderAdapter(val listener: InfoHeaderListener) :
                             setNotEmpty("", "rating")
                         }
                         summary.text = setNotEmpty(currWebtoon.summary, "summary")
+
+                        // Big summary so show condensed version with view more button visible
+                        if (summary.text.length > SUMMARY_MAX_LEN) {
+                            binding.summaryDetailButton.visibility = View.VISIBLE
+                            binding.summary.text =
+                                "${binding.summary.text.subSequence(0 until SUMMARY_MAX_LEN)}..."
+                        } else {
+                            binding.summaryDetailButton.visibility = View.GONE
+                        }
                     }
 
                     Glide.with(binding.coverImage.context).load(info.data.webtoon.coverImage)
@@ -90,6 +111,9 @@ class InfoHeaderAdapter(val listener: InfoHeaderListener) :
                     binding.resumeButton.setOnClickListener {
                         listener.onResumeClick()
                     }
+                    binding.summaryDetailButton.setOnClickListener {
+                        showSummarySheet(currWebtoon.summary)
+                    }
                 }
                 Resource.Status.LOADING -> {
                     hideAll()
@@ -108,5 +132,9 @@ class InfoHeaderAdapter(val listener: InfoHeaderListener) :
             binding.infoHeaderLoading.visibility = View.GONE
             binding.infoHeaderContent.visibility = View.GONE
         }
+    }
+
+    companion object {
+        const val SUMMARY_MAX_LEN = 160
     }
 }

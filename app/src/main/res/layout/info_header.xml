@@ -132,6 +132,15 @@
                 android:layout_marginTop="2dp"
                 android:text="
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sagittis tortor felis, nec sagittis nisl venenatis eu. Quisque ultrices convallis velit, eget laoreet metus viverra ac. Phasellus sapien ipsum, venenatis dignissim mattis eu, volutpat a neque. Quisque tincidunt condimentum massa, et fringilla enim luctus a. Quisque at sem interdum, ornare leo a, ultricies mi. Suspendisse tincidunt imperdiet est, non commodo sapien elementum ut. Etiam consectetur suscipit orci, ut pharetra sapien finibus et. Suspendisse ut tincidunt justo. Cras pellentesque nulla vitae risus convallis, at viverra libero viverra. Donec sit amet lacus at lacus molestie gravida non sed diam. Nulla ultricies auctor mauris in blandit. Nullam consequat vulputate maximus. Mauris sed diam et purus dignissim rutrum ut sit amet purus. Aenean tempus vestibulum lacus, et vulputate tellus facilisis sit amet." />
+
+            <Button
+                android:id="@+id/summaryDetailButton"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="0dp"
+                android:text="Read More" />
         </LinearLayout>
     </RelativeLayout>
 
