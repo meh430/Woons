@@ -9,7 +9,7 @@ import com.mehul.woons.databinding.InfoHeaderBinding
 import com.mehul.woons.entities.Resource
 import com.mehul.woons.entities.WebtoonChapters
 
-class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () -> Unit) :
+class InfoHeaderAdapter(val listener: InfoHeaderListener) :
     RecyclerView.Adapter<InfoHeaderAdapter.InfoViewHolder>() {
     private var webtoonInfo: Resource<WebtoonChapters> = Resource.loading()
     var inLibrary = false
@@ -37,6 +37,11 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) = holder.bind(webtoonInfo)
 
     override fun getItemCount(): Int = 1
+
+    interface InfoHeaderListener {
+        fun onLibraryClick()
+        fun onResumeClick()
+    }
 
     inner class InfoViewHolder(val binding: InfoHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -80,10 +85,10 @@ class InfoHeaderAdapter(val onLibraryClick: () -> Unit, val onResumeClick: () ->
 
                     // add listeners to the 2 buttons
                     binding.libraryButton.setOnClickListener {
-                        onLibraryClick()
+                        listener.onLibraryClick()
                     }
                     binding.resumeButton.setOnClickListener {
-                        onResumeClick()
+                        listener.onResumeClick()
                     }
                 }
                 Resource.Status.LOADING -> {

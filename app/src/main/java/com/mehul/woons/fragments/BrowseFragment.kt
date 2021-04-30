@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-class BrowseFragment : Fragment() {
+class BrowseFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
     private val browseArgs: BrowseFragmentArgs by navArgs()
     private val browseViewModel: BrowseViewModel by viewModels()
     private var _binding: FragmentBrowseBinding? = null
@@ -37,7 +37,6 @@ class BrowseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentBrowseBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,20 +45,7 @@ class BrowseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val onWebtoonClick = { webtoon: Webtoon ->
-            Timber.e(webtoon.toString())
-            val toInfo = BrowseFragmentDirections.actionBrowseFragmentToInfoFragment(
-                webtoon.name,
-                webtoon.internalName
-            )
-            findNavController().navigate(toInfo)
-        }
-        val browseAdapter = WebtoonAdapter(true, onWebtoonClick) {
-            // long click so change library
-            lifecycleScope.launch {
-                addOrRemoveFromLibrary(requireContext(), browseViewModel.libraryRepository, it)
-            }
-        }
+        val browseAdapter = WebtoonAdapter(true, this)
         binding.browseScroll.layoutManager =
             GridLayoutManager(
                 requireContext(),
@@ -172,5 +158,21 @@ class BrowseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(webtoon: Webtoon) {
+        Timber.e(webtoon.toString())
+        val toInfo = BrowseFragmentDirections.actionBrowseFragmentToInfoFragment(
+            webtoon.name,
+            webtoon.internalName
+        )
+        findNavController().navigate(toInfo)
+    }
+
+    override fun onLongClick(webtoon: Webtoon) {
+        // long click so change library
+        lifecycleScope.launch {
+            addOrRemoveFromLibrary(requireContext(), browseViewModel.libraryRepository, webtoon)
+        }
     }
 }

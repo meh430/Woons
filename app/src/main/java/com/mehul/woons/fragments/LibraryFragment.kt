@@ -20,7 +20,7 @@ import com.mehul.woons.viewmodels.LibraryViewModel
 import kotlinx.coroutines.launch
 
 
-class LibraryFragment : Fragment() {
+class LibraryFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
     private var _binding: FragmentLibraryBinding? = null
     private val binding get() = _binding!!
     private lateinit var libraryAdapter: WebtoonAdapter
@@ -71,12 +71,7 @@ class LibraryFragment : Fragment() {
             )
             findNavController().navigate(toInfo)
         }
-        libraryAdapter = WebtoonAdapter(true, onWebtoonClick) {
-            // long click so change library
-            lifecycleScope.launch {
-                addOrRemoveFromLibrary(requireContext(), libraryViewModel.libraryRepository, it)
-            }
-        }
+        libraryAdapter = WebtoonAdapter(true, this)
         binding.webtoonScroll.layoutManager =
             GridLayoutManager(
                 requireContext(),
@@ -95,5 +90,20 @@ class LibraryFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(webtoon: Webtoon) {
+        val toInfo = LibraryFragmentDirections.actionLibraryFragmentToInfoFragment(
+            webtoon.name,
+            webtoon.internalName
+        )
+        findNavController().navigate(toInfo)
+    }
+
+    override fun onLongClick(webtoon: Webtoon) {
+        // long click so change library
+        lifecycleScope.launch {
+            addOrRemoveFromLibrary(requireContext(), libraryViewModel.libraryRepository, webtoon)
+        }
     }
 }

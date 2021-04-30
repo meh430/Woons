@@ -11,11 +11,7 @@ import com.mehul.woons.entities.WebtoonsPage
 // onWebtoonClick will be used to navigate to info fragment
 // longClick will be used to add or remove from library
 // onDiscoverClick will be used to navigate to the browse fragment
-class DiscoverAdapter(
-    val onWebtoonClick: (Webtoon) -> Unit,
-    val onWebtoonLongClick: (Webtoon) -> Unit,
-    val onDiscoverClick: (String) -> Unit
-) :
+class DiscoverAdapter(val listener: DiscoverAdapter.DiscoverListener) :
     RecyclerView.Adapter<DiscoverAdapter.DiscoverViewHolder>() {
 
     private var discoverItems: List<WebtoonsPage> = ArrayList()
@@ -39,18 +35,28 @@ class DiscoverAdapter(
 
     override fun getItemCount() = discoverItems.size
 
+    interface DiscoverListener {
+        fun onWebtoonClick(webtoon: Webtoon)
+        fun onWebtoonLongClick(webtoon: Webtoon)
+        fun onDiscoverClick(category: String)
+    }
+
     inner class DiscoverViewHolder(val binding: DiscoverItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), WebtoonAdapter.WebtoonItemListener {
 
         fun bind(discoverItem: WebtoonsPage) {
             binding.categoryTitleBar.setOnClickListener {
-                onDiscoverClick(discoverItem.category)
+                listener.onDiscoverClick(discoverItem.category)
             }
 
             binding.category.text = Constants.getDisplayCategory(discoverItem.category)
-            val webtoonAdapter = WebtoonAdapter(false, onWebtoonClick, onWebtoonLongClick)
+            val webtoonAdapter =
+                WebtoonAdapter(false, this)
             binding.categoryItems.adapter = webtoonAdapter
             webtoonAdapter.updateWebtoons(discoverItem.items)
         }
+
+        override fun onClick(webtoon: Webtoon) = listener.onWebtoonClick(webtoon)
+        override fun onLongClick(webtoon: Webtoon) = listener.onWebtoonLongClick(webtoon)
     }
 }

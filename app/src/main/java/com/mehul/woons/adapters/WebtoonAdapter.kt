@@ -10,11 +10,10 @@ import com.mehul.woons.entities.Webtoon
 
 class WebtoonAdapter(
     private val isGrid: Boolean,
-    val onClick: (Webtoon) -> Unit,
-    val onLongClick: (Webtoon) -> Unit
+    val listener: WebtoonItemListener
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var webtoons: List<Webtoon> = ArrayList()
+    private var webtoons: List<Webtoon> = ArrayList()
 
     fun updateWebtoons(l: List<Webtoon>) {
         webtoons = l
@@ -54,15 +53,20 @@ class WebtoonAdapter(
 
     override fun getItemCount() = webtoons.size
 
+    interface WebtoonItemListener {
+        fun onClick(webtoon: Webtoon)
+        fun onLongClick(webtoon: Webtoon)
+    }
+
     inner class WebtoonGridViewHolder(private val binding: WebtoonItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(wt: Webtoon) {
             binding.root.setOnLongClickListener {
-                onLongClick(wt)
+                listener.onLongClick(wt)
                 true
             }
             binding.root.setOnClickListener {
-                onClick(wt)
+                listener.onClick(wt)
             }
             binding.title.text = if (wt.name.length >= 20) {
                 wt.name.slice(0..16) + "..."
@@ -78,11 +82,11 @@ class WebtoonAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(wt: Webtoon) {
             binding.root.setOnLongClickListener {
-                onLongClick(wt)
+                listener.onLongClick(wt)
                 true
             }
             binding.root.setOnClickListener {
-                onClick(wt)
+                listener.onClick(wt)
             }
             binding.title.text = if (wt.name.length >= 20) {
                 wt.name.slice(0..16) + "..."

@@ -23,7 +23,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
-class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
+class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener,
+    InfoHeaderAdapter.InfoHeaderListener {
     private val infoArgs: InfoFragmentArgs by navArgs()
     private val infoViewModel: WebtoonInfoViewModel by viewModels()
 
@@ -41,27 +42,7 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Do all observe stuff here
-        val onLibraryClick = {
-            if (infoViewModel.inLibrary) {
-                infoViewModel.removeFromLibrary()
-            } else {
-                infoViewModel.addToLibrary()
-            }
-        }
-        val onResumeClick: () -> Unit = {
-            lifecycleScope.launch {
-                val resumeCh = infoViewModel.getResumeChapter()
-                val toReader = InfoFragmentDirections.actionInfoFragmentToReaderFragment(
-                    infoArgs.internalName,
-                    resumeCh?.internalChapterReference
-                        ?: infoViewModel.getLastChapter().internalChapterReference,
-                    infoArgs.name
-                )
-                findNavController().navigate(toReader)
-            }
-        }
-        val infoHeaderAdapter = InfoHeaderAdapter(onLibraryClick, onResumeClick)
+        val infoHeaderAdapter = InfoHeaderAdapter(this)
         val chapterHeaderAdapter = ChapterHeaderAdapter()
         val chapterAdapter = ChapterAdapter(this)
         val mainAdapter = ConcatAdapter(infoHeaderAdapter, chapterHeaderAdapter, chapterAdapter)
@@ -123,4 +104,25 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener {
     override fun markManyRead(position: Int) = infoViewModel.markManyRead(position)
 
     override fun markManyUnread(position: Int) = infoViewModel.markManyUnread(position)
+
+    override fun onLibraryClick() {
+        if (infoViewModel.inLibrary) {
+            infoViewModel.removeFromLibrary()
+        } else {
+            infoViewModel.addToLibrary()
+        }
+    }
+
+    override fun onResumeClick() {
+        lifecycleScope.launch {
+            val resumeCh = infoViewModel.getResumeChapter()
+            val toReader = InfoFragmentDirections.actionInfoFragmentToReaderFragment(
+                infoArgs.internalName,
+                resumeCh?.internalChapterReference
+                    ?: infoViewModel.getLastChapter().internalChapterReference,
+                infoArgs.name
+            )
+            findNavController().navigate(toReader)
+        }
+    }
 }

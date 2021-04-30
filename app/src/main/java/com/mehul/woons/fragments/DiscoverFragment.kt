@@ -20,7 +20,7 @@ import com.mehul.woons.viewmodels.DiscoverViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DiscoverFragment : Fragment() {
+class DiscoverFragment : Fragment(), DiscoverAdapter.DiscoverListener {
     private val discoverViewModel: DiscoverViewModel by viewModels()
     private lateinit var discoverAdapter: DiscoverAdapter
     private var _binding: FragmentDiscoverBinding? = null
@@ -38,32 +38,8 @@ class DiscoverFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val onWebtoonClick = { webtoon: Webtoon ->
-            Timber.e(webtoon.toString())
-            val toInfo = DiscoverFragmentDirections.actionDiscoverFragmentToInfoFragment(
-                webtoon.name,
-                webtoon.internalName
-            )
-            findNavController().navigate(toInfo)
-        }
-        val onWebtoonLongClick: (Webtoon) -> Unit = {
-            // long click so change library
-            lifecycleScope.launch {
-                addOrRemoveFromLibrary(
-                    requireContext(),
-                    discoverViewModel.libraryRepository,
-                    it
-                )
-            }
-        }
-        val onDiscoverClick = { category: String ->
-            Timber.e(category)
-            val toBrowse =
-                DiscoverFragmentDirections.actionDiscoverFragmentToBrowseFragment(false, category)
-            findNavController().navigate(toBrowse)
-        }
         // Do all observe stuff here
-        discoverAdapter = DiscoverAdapter(onWebtoonClick, onWebtoonLongClick, onDiscoverClick)
+        discoverAdapter = DiscoverAdapter(this)
         binding.discoverScroll.adapter = discoverAdapter
 
         binding.searchBar.setOnEditorActionListener { textView, i, keyEvent ->
@@ -115,5 +91,32 @@ class DiscoverFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onWebtoonClick(webtoon: Webtoon) {
+        Timber.e(webtoon.toString())
+        val toInfo = DiscoverFragmentDirections.actionDiscoverFragmentToInfoFragment(
+            webtoon.name,
+            webtoon.internalName
+        )
+        findNavController().navigate(toInfo)
+    }
+
+    override fun onWebtoonLongClick(webtoon: Webtoon) {
+        // long clicked so we update library
+        lifecycleScope.launch {
+            addOrRemoveFromLibrary(
+                requireContext(),
+                discoverViewModel.libraryRepository,
+                webtoon
+            )
+        }
+    }
+
+    override fun onDiscoverClick(category: String) {
+        Timber.e(category)
+        val toBrowse =
+            DiscoverFragmentDirections.actionDiscoverFragmentToBrowseFragment(false, category)
+        findNavController().navigate(toBrowse)
     }
 }
