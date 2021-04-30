@@ -8,13 +8,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
+class LibraryRepository @Inject constructor(private val libraryDao: LibraryDao) {
     suspend fun getLibraryWebtoons(): LiveData<List<Webtoon>> = withContext(Dispatchers.IO) {
         libraryDao.getLibraryWebtoons()
-    }
-
-    suspend fun getNonLiveLibraryWebtoons(): List<Webtoon> = withContext(Dispatchers.IO) {
-        libraryDao.getNonLiveLibraryWebtoons()
     }
 
     suspend fun insertWebtoon(webtoon: Webtoon) = withContext(Dispatchers.IO) {
@@ -40,11 +36,6 @@ class LibraryRepository @Inject constructor(val libraryDao: LibraryDao) {
     suspend fun deleteAllWebtoons() = withContext(Dispatchers.IO) {
         libraryDao.deleteAllWebtoons()
     }
-
-    suspend fun getReadChapters(webtoonId: Long): LiveData<List<Chapter>> =
-        withContext(Dispatchers.IO) {
-            libraryDao.getReadChapters(webtoonId)
-        }
 
     suspend fun getNonLiveReadChapters(webtoonId: Long) = withContext(Dispatchers.IO) {
         libraryDao.getNonLiveReadChapters(webtoonId)

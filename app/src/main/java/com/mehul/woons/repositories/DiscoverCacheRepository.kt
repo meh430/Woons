@@ -8,8 +8,8 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
-class DiscoverCacheRepository @Inject constructor(val discoverCacheDao: DiscoverCacheDao) {
-    suspend fun clearDiscoverCache() = withContext(Dispatchers.IO) {
+class DiscoverCacheRepository @Inject constructor(private val discoverCacheDao: DiscoverCacheDao) {
+    private suspend fun clearDiscoverCache() = withContext(Dispatchers.IO) {
         discoverCacheDao.clearDiscoverCache()
     }
 

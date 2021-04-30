@@ -9,7 +9,7 @@ import javax.inject.Inject
 @ProvidedTypeConverter
 class DiscoverCacheConverter @Inject constructor(val gson: Gson) {
     @TypeConverter
-    fun listToJson(value: List<Webtoon>) = gson.toJson(value)
+    fun listToJson(value: List<Webtoon>): String = gson.toJson(value)
 
     @TypeConverter
     fun jsonToList(value: String) =

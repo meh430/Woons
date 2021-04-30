@@ -1,6 +1,5 @@
 package com.mehul.woons.repositories
 
-import com.mehul.woons.entities.Webtoon
 import com.mehul.woons.entities.WebtoonChapters
 import com.mehul.woons.entities.WebtoonsPage
 import com.mehul.woons.remote.WebtoonApi
@@ -8,10 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class WebtoonApiRepository @Inject constructor(val webtoonApi: WebtoonApi) {
-    suspend fun getAvailableCategories(): List<String> = withContext(Dispatchers.IO) {
-        webtoonApi.getAvailableCategories()
-    }
+class WebtoonApiRepository @Inject constructor(private val webtoonApi: WebtoonApi) {
 
     suspend fun getWebtoons(
         page: Int,
@@ -29,25 +25,12 @@ class WebtoonApiRepository @Inject constructor(val webtoonApi: WebtoonApi) {
             webtoonApi.getWebtoonInfo(internalName)
         }
 
-
     suspend fun getWebtoonChapter(
         internalName: String,
         internalChapterReference: String
     ): List<String> = withContext(Dispatchers.IO) {
         webtoonApi.getWebtoonChapter(internalName, internalChapterReference)
     }
-
-    // This is for getting updated versions given a library of webtoons
-    suspend fun getManyWebtoons(internalNames: List<String>, ids: List<Long>): List<Webtoon> =
-        withContext(Dispatchers.IO) {
-            val webtoons = internalNames.mapIndexed { idx, value ->
-                val webtoonInfo = getWebtoonInfo(value)
-                val currentWebtoon = webtoonInfo.webtoon
-                currentWebtoon.id = ids[idx]
-                currentWebtoon
-            }
-            webtoons
-        }
 
     suspend fun getDiscover(): List<WebtoonsPage> = withContext(Dispatchers.IO) {
         webtoonApi.getDiscover()
