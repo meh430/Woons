@@ -27,19 +27,6 @@ fun <T> loadLocalData(localCall: suspend () -> LiveData<T>): LiveData<Resource<T
         }
     }
 
-
-fun <T> loadRemoteData(remoteCall: suspend () -> T): LiveData<Resource<T>> =
-    liveData(Dispatchers.IO) {
-        emit(Resource.loading(null))
-        val result = kotlin.runCatching { remoteCall() }
-        result.onSuccess {
-            emit(Resource.success(it))
-        }
-        result.onFailure {
-            emit(Resource.error(it.message, null))
-        }
-    }
-
 fun <T> MutableLiveData<T>.notifyObserver() {
     this.value = this.value
 }

@@ -23,13 +23,13 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
     lateinit var libraryRepository: LibraryRepository
 
 
-    var currentChapterIndex = 0
+    private var currentChapterIndex = 0
+    private var inLibrary = false
     var webtoonId = LibraryRepository.NOT_IN_LIBRARY
-    var inLibrary = false
 
     // Should only be loaded in once, at start
     // note that chapters are in descending order? so like [chapter 5, chapter 4, chapter 3, ...]
-    var webtoonChapters: List<Chapter> = ArrayList()
+    private var webtoonChapters: List<Chapter> = ArrayList()
 
     // links to images of pages
     val chapterPages: MutableLiveData<Resource<List<String>>> = MutableLiveData()
@@ -73,7 +73,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
             }
             infoResult.onFailure {
                 // some network error so failed
-                // so on error, dont show buttons for prev and next because chapters not loaded!
+                // so on error, don't show buttons for prev and next because chapters not loaded!
                 chapterPages.value = Resource.error(it.message)
             }
         }
@@ -81,7 +81,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
 
     // call in main ui scope
     // only call after webtoonChapters has been loaded and set up properly
-    suspend fun loadChapterPages(internalName: String, internalChapterReference: String) {
+    private suspend fun loadChapterPages(internalName: String, internalChapterReference: String) {
         chapterPages.value = Resource.loading()
         val pages = kotlin.runCatching {
             webtoonApiRepository.getWebtoonChapter(internalName, internalChapterReference)
@@ -94,7 +94,7 @@ class ReaderViewModel(application: Application) : AndroidViewModel(application) 
             chapterPages.value = Resource.success(it)
             // chapter pages should be from currChapterIndex
             // Now, we can consider the chapter to be "read" since we have seen it
-            // Only update if in library and hasnt been read before
+            // Only update if in library and hasn't been read before
             if (inLibrary && !webtoonChapters[currentChapterIndex].hasRead) {
                 webtoonChapters[currentChapterIndex].hasRead = true
                 libraryRepository.insertReadChapter(

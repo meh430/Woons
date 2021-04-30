@@ -16,9 +16,6 @@ import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-// resource list of strings that is used for entire fragment loading
-// after strings are loaded, start initializing each discover category item!
-// A vertical list of horizontal lists!
 class DiscoverViewModel(application: Application) : AndroidViewModel(application) {
     @Inject
     lateinit var webtoonApiRepository: WebtoonApiRepository
@@ -31,7 +28,6 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
 
     val discoverLists: LiveData<Resource<List<WebtoonsPage>>> = liveData(Dispatchers.IO) {
         emit(Resource.loading<List<WebtoonsPage>>())
-        //discoverCacheRepository.clearDiscoverCache()
         val cache = discoverCacheRepository.getDiscoverCache().map {
             if (it.isNotEmpty()) {
                 Resource.success(it)
@@ -61,7 +57,7 @@ class DiscoverViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    suspend fun getCacheAge(): Double {
+    private suspend fun getCacheAge(): Double {
         val timeStamp = discoverCacheRepository.getNonLiveDiscoverCache()[0].createdAt
         Timber.e((((Date().time - timeStamp).toDouble()) / (1000 * 60 * 60)).toString())
         return ((Date().time - timeStamp).toDouble()) / (1000 * 60 * 60)

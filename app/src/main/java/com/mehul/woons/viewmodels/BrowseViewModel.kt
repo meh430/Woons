@@ -22,8 +22,8 @@ class BrowseViewModel(application: Application) : AndroidViewModel(application) 
     @Inject
     lateinit var libraryRepository: LibraryRepository
 
-    var reachedEnd = false
-    var pageNum: Int = DiscoverViewModel.PAGE
+    private var reachedEnd = false
+    private var pageNum: Int = DiscoverViewModel.PAGE
 
     val currentPage: MutableLiveData<Resource<WebtoonsPage>> = MutableLiveData()
     val webtoons: MutableLiveData<ArrayList<Webtoon>> = MutableLiveData()
