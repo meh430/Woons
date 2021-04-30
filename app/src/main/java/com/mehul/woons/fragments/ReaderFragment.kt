@@ -26,9 +26,22 @@ class ReaderFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentReaderBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    private fun changeChapter(modifyCurrentChapter: (String) -> Boolean) {
+        val waitText = "Please wait..."
+        val noMoreText = "No more chapters..."
+        if (readerViewModel.chapterPages.value!!.status == Resource.Status.SUCCESS) {
+            Timber.e("Changing chapter")
+
+            if (!modifyCurrentChapter(readerArgs.internalName)) {
+                Toast.makeText(requireContext(), noMoreText, Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), waitText, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,6 +49,7 @@ class ReaderFragment : Fragment() {
         val readerAdapter = ReaderAdapter()
         binding.readerScroll.adapter = readerAdapter
 
+        // If already success, then data was loaded previously, avoid re fetch
         if (readerViewModel.chapterPages.value!!.status != Resource.Status.SUCCESS) {
             readerViewModel.initializeReader(
                 readerArgs.name,
@@ -44,31 +58,12 @@ class ReaderFragment : Fragment() {
             )
         }
 
-        val waitText = "Please wait..."
-        val noMoreText = "No more chapters..."
-
         binding.prevChapter.setOnClickListener {
-            if (readerViewModel.chapterPages.value!!.status == Resource.Status.SUCCESS) {
-                Timber.e("PREV")
-
-                if (!readerViewModel.prevChapter(readerArgs.internalName)) {
-                    Toast.makeText(requireContext(), noMoreText, Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(requireContext(), waitText, Toast.LENGTH_SHORT).show()
-            }
-
+            changeChapter { readerViewModel.prevChapter(it) }
         }
 
         binding.nextChapter.setOnClickListener {
-            if (readerViewModel.chapterPages.value!!.status == Resource.Status.SUCCESS) {
-                Timber.e("NEXT")
-                if (!readerViewModel.nextChapter(readerArgs.internalName)) {
-                    Toast.makeText(requireContext(), noMoreText, Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(requireContext(), waitText, Toast.LENGTH_SHORT).show()
-            }
+            changeChapter { readerViewModel.nextChapter(it) }
         }
 
         readerViewModel.chapterPages.observe(viewLifecycleOwner) {
@@ -88,22 +83,22 @@ class ReaderFragment : Fragment() {
                     hideAll()
                     val loadingText = "Loading..."
                     binding.chapterName.text = loadingText
-                    binding.loading.visibility = View.VISIBLE
                     (activity as MainActivity).supportActionBar?.title = loadingText
+                    binding.loading.visibility = View.VISIBLE
                 }
                 Resource.Status.ERROR -> {
                     hideAll()
                     val errorText = "Error"
                     binding.chapterName.text = errorText
-                    binding.error.error.visibility = View.VISIBLE
                     binding.error.errorLabel.text = it.message!!
+                    binding.error.error.visibility = View.VISIBLE
                     (activity as MainActivity).supportActionBar?.title = errorText
                 }
             }
         }
     }
 
-    fun hideAll() {
+    private fun hideAll() {
         binding.readerScroll.visibility = View.GONE
         binding.error.error.visibility = View.GONE
         binding.loading.visibility = View.GONE

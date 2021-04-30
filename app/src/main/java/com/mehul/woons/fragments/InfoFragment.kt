@@ -59,6 +59,7 @@ class InfoFragment : Fragment(), ChapterAdapter.ChapterItemListener,
             if (infoViewModel.webtoonInfo.value!!.status != Resource.Status.SUCCESS) {
                 return@observe
             }
+            // Set adapter to be empty until chapters load back up with updates
             chapterAdapter.updateChapterItems(ArrayList())
             infoViewModel.updateAllChapters()
         }

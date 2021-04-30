@@ -30,7 +30,6 @@ class LibraryFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentLibraryBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -49,7 +48,6 @@ class LibraryFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
                         binding.empty.empty.visibility = View.VISIBLE
                     } else {
                         binding.webtoonScroll.visibility = View.VISIBLE
-
                     }
                 }
                 Resource.Status.LOADING -> {
@@ -64,13 +62,6 @@ class LibraryFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
     }
 
     private fun initializeAdapter() {
-        val onWebtoonClick = { webtoon: Webtoon ->
-            val toInfo = LibraryFragmentDirections.actionLibraryFragmentToInfoFragment(
-                webtoon.name,
-                webtoon.internalName
-            )
-            findNavController().navigate(toInfo)
-        }
         libraryAdapter = WebtoonAdapter(true, this)
         binding.webtoonScroll.layoutManager =
             GridLayoutManager(
@@ -101,7 +92,6 @@ class LibraryFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
     }
 
     override fun onLongClick(webtoon: Webtoon) {
-        // long click so change library
         lifecycleScope.launch {
             addOrRemoveFromLibrary(requireContext(), libraryViewModel.libraryRepository, webtoon)
         }

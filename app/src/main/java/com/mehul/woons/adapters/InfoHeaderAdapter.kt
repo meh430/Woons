@@ -48,7 +48,7 @@ class InfoHeaderAdapter(val listener: InfoHeaderListener) :
     inner class InfoViewHolder(val binding: InfoHeaderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private fun showSummarySheet(summary: String) {
+        private fun showSummaryDialog(summary: String) {
             MaterialAlertDialogBuilder(binding.root.context)
                 .setTitle("Summary")
                 .setMessage(summary)
@@ -112,7 +112,7 @@ class InfoHeaderAdapter(val listener: InfoHeaderListener) :
                         listener.onResumeClick()
                     }
                     binding.summaryDetailButton.setOnClickListener {
-                        showSummarySheet(currWebtoon.summary)
+                        showSummaryDialog(currWebtoon.summary)
                     }
                 }
                 Resource.Status.LOADING -> {
@@ -135,6 +135,6 @@ class InfoHeaderAdapter(val listener: InfoHeaderListener) :
     }
 
     companion object {
-        const val SUMMARY_MAX_LEN = 160
+        const val SUMMARY_MAX_LEN = 260
     }
 }
