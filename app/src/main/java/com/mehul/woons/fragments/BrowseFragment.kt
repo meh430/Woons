@@ -57,22 +57,24 @@ class BrowseFragment : Fragment(), WebtoonAdapter.WebtoonItemListener {
         if (browseArgs.isSearch) {
             binding.browseSearch.visibility = View.VISIBLE
             binding.browseSearch.setText(browseArgs.category)
+            binding.browseSearch.setOnEditorActionListener { _, i, _ ->
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    Timber.e("SEARCHING ${binding.browseSearch.text}")
+                    // hide kb
+                    binding.browseSearch.clearFocus()
+                    (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                        .hideSoftInputFromWindow(binding.browseSearch.windowToken, 0)
+                    // Search with new query
+                    browseViewModel.performSearch(binding.browseSearch.text.toString())
+                    true
+                } else {
+                    Timber.e("NOT SEARCHING ${binding.browseSearch.text}")
+                    false
+                }
+            }
             // Ensure that no data has been loaded already
             if (browseViewModel.webtoons.value?.isEmpty() == true) {
                 browseViewModel.performSearch(browseArgs.category)
-                binding.browseSearch.setOnEditorActionListener { _, i, _ ->
-                    if (i == EditorInfo.IME_ACTION_SEARCH) {
-                        // hide kb
-                        binding.browseSearch.clearFocus()
-                        (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                            .hideSoftInputFromWindow(binding.browseSearch.windowToken, 0)
-                        // Search with new query
-                        browseViewModel.performSearch(binding.browseSearch.text.toString())
-                        true
-                    } else {
-                        false
-                    }
-                }
             }
         } else {
             binding.browseSearch.visibility = View.GONE
