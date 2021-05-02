@@ -57,6 +57,7 @@ class BrowseViewModel(application: Application) : AndroidViewModel(application) 
         if (reachedEnd) {
             return
         }
+
         Timber.e(pageNum.toString())
         viewModelScope.launch {
             currentPage.value = Resource.loading()
