@@ -29,7 +29,6 @@ class LocalModule {
     ) =
         DiscoverCacheDatabase.getDatabase(application, discoverCacheConverter)
 
-
     @Singleton
     @Provides
     fun provideReadChaptersDao(libraryDatabase: LibraryDatabase) =
